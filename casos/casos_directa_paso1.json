@@ -1,0 +1,222 @@
+[
+  {
+    "id": "C01",
+    "categoria": "directa",
+    "descripcion": "Pedido urgente con una camioneta lista y la ruta libre (el ejemplo del contrato del grupo).",
+    "estado": {
+      "pedido": "P01",
+      "carga_kg": 800,
+      "tipo_carga": "general",
+      "destino": "zona_norte",
+      "urgencia": "alta",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V10",
+        "tipo_vehiculo": "camioneta",
+        "capacidad_kg": 1000,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "despachar",
+    "criterio_esperada": "Todo lo necesario está explícito: el vehículo asignado está disponible, fuera del taller, con combustible y conductor; 800 kg caben en 1000 kg; la ruta está despejada y el pedido es urgente."
+  },
+  {
+    "id": "C02",
+    "categoria": "directa",
+    "descripcion": "Pedido urgente con el vehículo listo, pero la ruta está cortada.",
+    "estado": {
+      "pedido": "P02",
+      "carga_kg": 500,
+      "tipo_carga": "general",
+      "destino": "zona_sur",
+      "urgencia": "alta",
+      "ruta_despejada": false,
+      "vehiculo_asignado": {
+        "id": "V20",
+        "tipo_vehiculo": "furgon",
+        "capacidad_kg": 3500,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "alertar",
+    "criterio_esperada": "La ruta no está despejada, así que no se puede despachar; como el pedido es urgente, no corresponde esperar sin más: el supervisor debe decidir (otra ruta, reprogramar o avisar al cliente)."
+  },
+  {
+    "id": "C03",
+    "categoria": "directa",
+    "descripcion": "Pedido sin urgencia con la ruta cortada.",
+    "estado": {
+      "pedido": "P03",
+      "carga_kg": 400,
+      "tipo_carga": "general",
+      "destino": "zona_oriente",
+      "urgencia": "baja",
+      "ruta_despejada": false,
+      "vehiculo_asignado": {
+        "id": "V30",
+        "tipo_vehiculo": "camioneta",
+        "capacidad_kg": 1500,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "esperar",
+    "criterio_esperada": "La ruta está cortada y el pedido no es urgente: no hace falta molestar al supervisor, basta con esperar a que se despeje."
+  },
+  {
+    "id": "C04",
+    "categoria": "directa",
+    "descripcion": "El vehículo asignado está en el taller y hay un furgón alternativo listo.",
+    "estado": {
+      "pedido": "P04",
+      "carga_kg": 1200,
+      "tipo_carga": "general",
+      "destino": "zona_poniente",
+      "urgencia": "media",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V40",
+        "tipo_vehiculo": "furgon",
+        "capacidad_kg": 3500,
+        "disponible": false,
+        "en_mantencion": true,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": [
+        {
+          "id": "V41",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        }
+      ]
+    },
+    "decision_esperada": "reasignar",
+    "criterio_esperada": "El estado dice explícitamente que el asignado no está disponible y está en mantención (dato coherente, no contradictorio); el alternativo es del mismo tipo y está listo."
+  },
+  {
+    "id": "C05",
+    "categoria": "un_paso",
+    "descripcion": "La carga pesa más de lo que soporta la camioneta asignada; hay un furgón libre.",
+    "estado": {
+      "pedido": "P05",
+      "carga_kg": 1200,
+      "tipo_carga": "general",
+      "destino": "zona_norte",
+      "urgencia": "media",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V50",
+        "tipo_vehiculo": "camioneta",
+        "capacidad_kg": 1000,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": [
+        {
+          "id": "V51",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        }
+      ]
+    },
+    "decision_esperada": "reasignar",
+    "criterio_esperada": "Una regla: la capacidad (1200 kg > 1000 kg). El asignado está operativo, pero la carga no cabe; el furgón alternativo sí tiene capacidad."
+  },
+  {
+    "id": "C06",
+    "categoria": "un_paso",
+    "descripcion": "Carga refrigerada urgente asignada a un furgón común, sin vehículos alternativos.",
+    "estado": {
+      "pedido": "P06",
+      "carga_kg": 300,
+      "tipo_carga": "refrigerada",
+      "destino": "zona_sur",
+      "urgencia": "alta",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V60",
+        "tipo_vehiculo": "furgon",
+        "capacidad_kg": 3500,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "alertar",
+    "criterio_esperada": "Una regla: la carga refrigerada solo puede ir en furgón refrigerado. El furgón asignado no sirve y no hay alternativos; como el pedido es urgente, debe intervenir el supervisor."
+  },
+  {
+    "id": "C07",
+    "categoria": "un_paso",
+    "descripcion": "Pedido sin urgencia que llena casi toda la camioneta.",
+    "estado": {
+      "pedido": "P07",
+      "carga_kg": 1350,
+      "tipo_carga": "general",
+      "destino": "zona_oriente",
+      "urgencia": "baja",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V70",
+        "tipo_vehiculo": "camioneta",
+        "capacidad_kg": 1500,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "despachar",
+    "criterio_esperada": "Una regla: aprovechamiento. Aunque no hay urgencia, 1350 de 1500 kg es 90 % (sobre el umbral de 80 %): el viaje ya se aprovecha y no tiene sentido esperar para juntar más carga."
+  },
+  {
+    "id": "C08",
+    "categoria": "un_paso",
+    "descripcion": "Pedido sin urgencia que ocupa muy poco del furgón.",
+    "estado": {
+      "pedido": "P08",
+      "carga_kg": 200,
+      "tipo_carga": "general",
+      "destino": "zona_poniente",
+      "urgencia": "baja",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V80",
+        "tipo_vehiculo": "furgon",
+        "capacidad_kg": 1500,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "esperar",
+    "criterio_esperada": "Una regla: aprovechamiento. Sin urgencia y con 200 de 1500 kg (13 %, bajo el 80 %), conviene esperar para consolidar con otros pedidos aunque el vehículo esté listo."
+  }
+]
