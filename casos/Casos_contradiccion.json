@@ -1,0 +1,102 @@
+[
+  {
+    "id": "C17",
+    "categoria": "contradiccion",
+    "descripcion": "Vehiculo con conbustible insuficiente",
+    "estado": {
+      "pedido": "P17",
+      "carga_kg": 500,
+      "tipo_carga": "general",
+      "destino": "zona_sur",
+      "urgencia": "alta",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V17",
+        "tipo_vehiculo": "furgon",
+        "capacidad_kg": 800,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "bajo",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "inspeccionar",
+    "criterio_esperada": "contradiccion, no se puede salir sin combustible"
+  },
+  {
+    "id": "C18",
+    "categoria": "contradiccion",
+    "descripcion": "vehiculo disponible pero en el taller al mismo tiempo",
+    "estado": {
+      "pedido": "P18",
+      "carga_kg": 1500,
+      "tipo_carga": "general",
+      "destino": "zona_norte",
+      "urgencia": "media",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V18",
+        "tipo_vehiculo": "camioneta",
+        "capacidad_kg": 1500,
+        "disponible": true,
+        "en_mantencion": true,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "inspeccionar",
+    "criterio_esperada": "Informacion contradictoria, Dice estar disponible y al mismo timepo en el taller"
+  },
+  {
+    "id": "C19",
+    "categoria": "ambiguedad",
+    "descripcion": "falta la urgencia del pedido, dato critico",
+    "estado": {
+      "pedido": "P19",
+      "carga_kg": 300,
+      "tipo_carga": "general",
+      "destino": "zona_centro",
+      "urgencia": null,
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V19",
+        "tipo_vehiculo": "furgon",
+        "capacidad_kg": 600,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "inspeccionar",
+    "criterio_esperada": "falta la urgencia, por lo que prolog no puede decidir si despachar o esperar"
+  },
+  {
+    "id": "C20",
+    "categoria": "contradiccion",
+    "descripcion": "capacidad declarada del vehiculo es imposible para su tipo",
+    "estado": {
+      "pedido": "P20",
+      "carga_kg": 200,
+      "tipo_carga": "general",
+      "destino": "zona_poniente",
+      "urgencia": "alta",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V20",
+        "tipo_vehiculo": "camioneta",
+        "capacidad_kg": 9000,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "inspeccionar",
+    "criterio_esperada": "una camioneta no puede tener 9000 kg de capacidad, hay un error en los datos."
+  }
+]
