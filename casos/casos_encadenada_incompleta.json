@@ -1,0 +1,252 @@
+[
+  {
+    "id": "C09",
+    "categoria": "encadenada",
+    "descripcion": "Carga refrigerada con destino al centro asignada a un camión; el alternativo es un furgón refrigerado listo.",
+    "estado": {
+      "pedido": "P09",
+      "carga_kg": 900,
+      "tipo_carga": "refrigerada",
+      "destino": "centro",
+      "urgencia": "media",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V90",
+        "tipo_vehiculo": "camion",
+        "capacidad_kg": 8000,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": [
+        {
+          "id": "V91",
+          "tipo_vehiculo": "furgon_refrigerado",
+          "capacidad_kg": 3000,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        }
+      ]
+    },
+    "decision_esperada": "reasignar",
+    "criterio_esperada": "Varias relaciones: el camión no sirve porque la carga refrigerada exige furgón refrigerado (y además los camiones no entran al centro); el alternativo es refrigerado, está operativo, tiene capacidad y puede entrar al centro."
+  },
+  {
+    "id": "C10",
+    "categoria": "encadenada",
+    "descripcion": "Pedido urgente: la camioneta asignada no tiene conductor y el único alternativo tiene poco combustible.",
+    "estado": {
+      "pedido": "P10",
+      "carga_kg": 700,
+      "tipo_carga": "general",
+      "destino": "zona_sur",
+      "urgencia": "alta",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V100",
+        "tipo_vehiculo": "camioneta",
+        "capacidad_kg": 1500,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": false
+      },
+      "vehiculos_alternativos": [
+        {
+          "id": "V101",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "bajo",
+          "conductor_disponible": true
+        }
+      ]
+    },
+    "decision_esperada": "alertar",
+    "criterio_esperada": "Cadena: sin conductor el asignado no está operativo; con poco combustible el alternativo tampoco; por lo tanto no hay vehículo apto, y como el pedido es urgente debe intervenir el supervisor."
+  },
+  {
+    "id": "C11",
+    "categoria": "encadenada",
+    "descripcion": "Pedido no urgente: la carga no cabe en el vehículo asignado y el alternativo no tiene conductor.",
+    "estado": {
+      "pedido": "P11",
+      "carga_kg": 1800,
+      "tipo_carga": "general",
+      "destino": "zona_oriente",
+      "urgencia": "baja",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V110",
+        "tipo_vehiculo": "camioneta",
+        "capacidad_kg": 1500,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": [
+        {
+          "id": "V111",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": false
+        }
+      ]
+    },
+    "decision_esperada": "esperar",
+    "criterio_esperada": "Cadena: 1800 kg no caben en 1500 kg; el furgón tendría capacidad pero no tiene conductor; no hay vehículo apto y, como no es urgente, se espera a que haya uno libre."
+  },
+  {
+    "id": "C12",
+    "categoria": "encadenada",
+    "descripcion": "Camión asignado a un pedido con destino al centro; hay una camioneta alternativa lista.",
+    "estado": {
+      "pedido": "P12",
+      "carga_kg": 1100,
+      "tipo_carga": "general",
+      "destino": "centro",
+      "urgencia": "media",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V120",
+        "tipo_vehiculo": "camion",
+        "capacidad_kg": 10000,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": [
+        {
+          "id": "V121",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 1500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        }
+      ]
+    },
+    "decision_esperada": "reasignar",
+    "criterio_esperada": "Cadena: destino centro + tipo camión => zona restringida => el camión no puede entrar aunque esté operativo y tenga capacidad; la camioneta alternativa sí puede y le caben los 1100 kg."
+  },
+  {
+    "id": "C13",
+    "categoria": "incompleta",
+    "descripcion": "No se registró la urgencia del pedido; todo lo demás está listo.",
+    "estado": {
+      "pedido": "P13",
+      "carga_kg": 600,
+      "tipo_carga": "general",
+      "destino": "zona_norte",
+      "urgencia": null,
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V130",
+        "tipo_vehiculo": "furgon",
+        "capacidad_kg": 3500,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "inspeccionar",
+    "criterio_esperada": "Sin urgencia no se sabe si conviene salir ya o esperar a consolidar carga (el furgón iría al 17 %). Elegir despachar o esperar sería inventar el dato."
+  },
+  {
+    "id": "C14",
+    "categoria": "incompleta",
+    "descripcion": "Falta la capacidad del vehículo asignado.",
+    "estado": {
+      "pedido": "P14",
+      "carga_kg": 1200,
+      "tipo_carga": "general",
+      "destino": "zona_poniente",
+      "urgencia": "alta",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V140",
+        "tipo_vehiculo": "camioneta",
+        "capacidad_kg": null,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": []
+    },
+    "decision_esperada": "inspeccionar",
+    "criterio_esperada": "No se puede saber si 1200 kg caben en la camioneta. Aunque el pedido es urgente, alertar o despachar supondría un dato que no existe."
+  },
+  {
+    "id": "C15",
+    "categoria": "incompleta",
+    "descripcion": "No se sabe si hay vehículos alternativos, pero el asignado está listo y el pedido es urgente.",
+    "estado": {
+      "pedido": "P15",
+      "carga_kg": 800,
+      "tipo_carga": "general",
+      "destino": "zona_sur",
+      "urgencia": "alta",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V150",
+        "tipo_vehiculo": "camioneta",
+        "capacidad_kg": 1500,
+        "disponible": true,
+        "en_mantencion": false,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": null
+    },
+    "decision_esperada": "despachar",
+    "criterio_esperada": "Falta un dato, pero no importa: los alternativos solo se necesitan si el asignado no sirve, y el asignado sirve. Inspeccionar aquí sería demorar un pedido urgente sin motivo."
+  },
+  {
+    "id": "C16",
+    "categoria": "incompleta",
+    "descripcion": "El vehículo asignado está en el taller y del alternativo no se sabe el combustible.",
+    "estado": {
+      "pedido": "P16",
+      "carga_kg": 500,
+      "tipo_carga": "general",
+      "destino": "zona_oriente",
+      "urgencia": "media",
+      "ruta_despejada": true,
+      "vehiculo_asignado": {
+        "id": "V160",
+        "tipo_vehiculo": "furgon",
+        "capacidad_kg": 3500,
+        "disponible": false,
+        "en_mantencion": true,
+        "combustible": "suficiente",
+        "conductor_disponible": true
+      },
+      "vehiculos_alternativos": [
+        {
+          "id": "V161",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 1500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": null,
+          "conductor_disponible": true
+        }
+      ]
+    },
+    "decision_esperada": "inspeccionar",
+    "criterio_esperada": "El asignado no sirve, así que el alternativo pasa a ser necesario, pero falta su combustible: no se puede saber si reasignar es posible."
+  }
+]
