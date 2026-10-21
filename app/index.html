@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Despacho: Prolog vs Laya</title>
+<style>
+  :root {
+    --fondo: #f6f7f9; --tarjeta: #ffffff; --texto: #1d2330; --suave: #5b6475;
+    --borde: #dde1e8; --acento: #2457c5; --ok: #1f7a3f; --mal: #b3261e; --aviso: #8a5a00;
+    --barra: #c9d6f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #14171d; --tarjeta: #1d222b; --texto: #e6e9ef; --suave: #a2aabb;
+      --borde: #323a47; --acento: #7aa2ff; --ok: #5cc98a; --mal: #ff8a80; --aviso: #f0c060;
+      --barra: #34466e;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fondo); color: var(--texto);
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { padding: 18px 24px; border-bottom: 1px solid var(--borde); background: var(--tarjeta);
+           display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+  h1 { font-size: 20px; margin: 0; }
+  h2 { font-size: 16px; margin: 0 0 10px; }
+  main { max-width: 1200px; margin: 0 auto; padding: 20px 16px 40px;
+         display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 16px; align-items: start; }
+  @media (max-width: 900px) { main { grid-template-columns: minmax(0, 1fr); } }
+  .tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 10px; padding: 16px; min-width: 0; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-size: 13px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--borde); color: var(--suave); }
+  .chip.ok { color: var(--ok); border-color: var(--ok); }
+  .chip.mal { color: var(--mal); border-color: var(--mal); }
+  label { display: block; font-size: 13px; color: var(--suave); margin: 12px 0 4px; }
+  select, textarea, button { font: inherit; color: inherit; }
+  select, textarea { width: 100%; background: var(--fondo); border: 1px solid var(--borde); border-radius: 6px; padding: 7px 8px; }
+  textarea { font-family: ui-monospace, Consolas, monospace; font-size: 12.5px; min-height: 300px; resize: vertical; }
+  .botones { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  button { border: 1px solid var(--acento); background: transparent; color: var(--acento);
+           border-radius: 6px; padding: 7px 12px; cursor: pointer; }
+  button.principal { background: var(--acento); color: #fff; }
+  button:disabled { opacity: .5; cursor: wait; }
+  .nota { font-size: 13px; color: var(--suave); margin: 6px 0 0; }
+  .resultados { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; min-width: 0; }
+  @media (min-width: 1500px) { .resultados { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .tabla { overflow-x: auto; }
+  .comparacion { grid-column: 1 / -1; }
+  .decision { font-size: 26px; font-weight: 650; margin: 2px 0 8px; }
+  .etiqueta { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--suave); }
+  .vacio { color: var(--suave); font-style: italic; }
+  .error { color: var(--mal); white-space: pre-wrap; }
+  pre { background: var(--fondo); border: 1px solid var(--borde); border-radius: 6px; padding: 10px;
+        font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; margin: 6px 0 0; }
+  .fila { display: grid; grid-template-columns: 100px 1fr 52px; gap: 8px; align-items: center; margin: 5px 0; font-size: 14px; }
+  .pista { background: var(--fondo); border-radius: 4px; height: 14px; overflow: hidden; }
+  .relleno { background: var(--barra); height: 100%; }
+  .fila.elegida { font-weight: 650; }
+  .fila.elegida .relleno { background: var(--acento); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .datos { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; font-size: 14px; margin: 8px 0; }
+  .datos dt { color: var(--suave); }
+  .datos dd { margin: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--borde); }
+  th { color: var(--suave); font-weight: 500; }
+  .si { color: var(--ok); font-weight: 600; }
+  .no { color: var(--mal); font-weight: 600; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Despacho de carga · Prolog vs Laya</h1>
+  <div class="chips">
+    <span class="chip" id="chip-prolog">Prolog: revisando…</span>
+    <span class="chip" id="chip-laya">Laya: cargando…</span>
+  </div>
+</header>
+
+<main>
+  <section class="tarjeta">
+    <h2>1. Caso</h2>
+    <label for="caso">Caso de prueba</label>
+    <select id="caso"></select>
+    <p class="nota" id="descripcion"></p>
+
+    <label for="estado">Estado canónico (lo reciben ambos agentes; se puede editar)</label>
+    <textarea id="estado" spellcheck="false"></textarea>
+
+    <label for="esperada">Decisión esperada</label>
+    <select id="esperada"></select>
+    <p class="nota" id="criterio"></p>
+
+    <label for="criterios">Criterios de Laya</label>
+    <select id="criterios"></select>
+
+    <div class="botones">
+      <button class="principal" data-agentes="prolog,laya">Ejecutar ambos</button>
+      <button data-agentes="prolog">Solo Prolog</button>
+      <button data-agentes="laya">Solo Laya</button>
+    </div>
+    <p class="error" id="error-entrada"></p>
+  </section>
+
+  <section class="resultados">
+    <article class="tarjeta comparacion" id="tarjeta-comparacion">
+      <div class="etiqueta">Comparación</div>
+      <p class="vacio">Ejecuta un caso para comparar los agentes.</p>
+    </article>
+    <article class="tarjeta" id="tarjeta-prolog">
+      <div class="etiqueta">Prolog · inferencia lógica</div>
+      <p class="vacio">Sin ejecutar.</p>
+    </article>
+    <article class="tarjeta" id="tarjeta-laya">
+      <div class="etiqueta">Laya · decisión estadística</div>
+      <p class="vacio">Sin ejecutar.</p>
+    </article>
+  </section>
+</main>
+
+<script>
+const $ = (s) => document.querySelector(s);
+let casos = [];
+let configuracion = null;
+
+// Crea un elemento; los textos se insertan como texto (nunca como HTML).
+function el(etiqueta, atributos = {}, ...hijos) {
+  const nodo = document.createElement(etiqueta);
+  for (const [k, v] of Object.entries(atributos)) {
+    if (k === "clase") nodo.className = v; else nodo.setAttribute(k, v);
+  }
+  for (const h of hijos) if (h !== null && h !== undefined) nodo.append(h);
+  return nodo;
+}
+
+function opcion(valor, texto) { return el("option", { value: valor }, texto); }
+
+function pintarChips() {
+  const p = configuracion.prolog, l = configuracion.laya;
+  const cp = $("#chip-prolog"), cl = $("#chip-laya");
+  cp.textContent = p.listo ? "Prolog: listo" : "Prolog: no encontrado";
+  cp.className = "chip " + (p.listo ? "ok" : "mal");
+  cp.title = p.error || p.ruta || "";
+  cl.textContent = l.listo ? "Laya: listo" : (l.error ? "Laya: no disponible" : "Laya: cargando modelo…");
+  cl.className = "chip " + (l.listo ? "ok" : (l.error ? "mal" : ""));
+  cl.title = l.error || "";
+}
+
+async function refrescarConfiguracion() {
+  configuracion = await (await fetch("/api/configuracion")).json();
+  pintarChips();
+  if (!configuracion.laya.listo && !configuracion.laya.error) setTimeout(refrescarConfiguracion, 3000);
+}
+
+function elegirCaso() {
+  const id = $("#caso").value;
+  const caso = casos.find((c) => c.id === id);
+  if (caso) {
+    $("#descripcion").textContent = `${caso.categoria} · ${caso.descripcion}`;
+    $("#estado").value = JSON.stringify(caso.estado, null, 2);
+    $("#esperada").value = caso.decision_esperada;
+    $("#criterio").textContent = "Criterio: " + caso.criterio_esperada;
+  } else {
+    $("#descripcion").textContent = "Escribe o pega un estado canónico nuevo (ver docs/estado_canonico.md).";
+    $("#esperada").value = "";
+    $("#criterio").textContent = "";
+  }
+}
+
+function listaDatos(pares) {
+  const dl = el("dl", { clase: "datos" });
+  for (const [k, v] of pares) dl.append(el("dt", {}, k), el("dd", {}, v));
+  return dl;
+}
+
+function pintarProlog(r) {
+  const t = $("#tarjeta-prolog");
+  t.replaceChildren(el("div", { clase: "etiqueta" }, "Prolog · inferencia lógica"));
+  if (!r) { t.append(el("p", { clase: "vacio" }, "No ejecutado.")); return; }
+  if (r.error) { t.append(el("p", { clase: "error" }, r.error)); return; }
+  t.append(
+    el("div", { clase: "decision" }, r.accion),
+    listaDatos([
+      ["Acciones demostrables", r.candidatas.join(", ") || "ninguna"],
+      ["Datos críticos faltantes", r.faltantes.join(", ") || "ninguno"],
+      ["Contradicciones", r.contradicciones.join(", ") || "ninguna"],
+      ["Tiempo", `${r.tiempo_ms} ms`],
+    ]),
+    el("div", { clase: "etiqueta" }, "Justificación (derivación)"),
+    el("pre", {}, r.justificacion.join("\n")),
+  );
+}
+
+function pintarLaya(r) {
+  const t = $("#tarjeta-laya");
+  t.replaceChildren(el("div", { clase: "etiqueta" }, "Laya · decisión estadística"));
+  if (!r) { t.append(el("p", { clase: "vacio" }, "No ejecutado.")); return; }
+  if (r.error) { t.append(el("p", { clase: "error" }, r.error)); return; }
+  t.append(el("div", { clase: "decision" }, r.accion));
+  const barras = el("div", {});
+  for (const accion of configuracion.acciones) {
+    const p = r.probabilidades[accion] ?? 0;
+    barras.append(el("div", { clase: "fila" + (accion === r.accion ? " elegida" : "") },
+      el("span", {}, accion),
+      el("div", { clase: "pista" }, el("div", { clase: "relleno", style: `width:${(p * 100).toFixed(1)}%` })),
+      el("span", { clase: "num" }, p.toFixed(3)),
+    ));
+  }
+  t.append(
+    el("div", { clase: "etiqueta" }, "Probabilidades"),
+    barras,
+    listaDatos([
+      ["Confianza (max p)", String(r.confianza)],
+      ["Concentración (1 − H/log k)", String(r.concentracion)],
+      ["Modelo", `${r.modelo} · criterios ${r.version_criterios}` + (r.version_laya ? ` · laya ${r.version_laya}` : "")],
+      ["Tiempo", `${r.tiempo_ms} ms`],
+    ]),
+    el("p", { clase: "nota" }, "Laya no entrega justificación: una probabilidad alta no es una demostración."),
+  );
+}
+
+function marca(valor) {
+  if (valor === null || valor === undefined) return el("span", {}, "—");
+  return el("span", { clase: valor ? "si" : "no" }, valor ? "sí" : "no");
+}
+
+function pintarComparacion(datos) {
+  const c = datos.comparacion, t = $("#tarjeta-comparacion");
+  const accion = (r) => (r && !r.error ? r.accion : "—");
+  t.replaceChildren(
+    el("div", { clase: "etiqueta" }, "Comparación"),
+    el("div", { clase: "tabla" }, el("table", {},
+      el("thead", {}, el("tr", {}, el("th", {}, "Decisión esperada"), el("th", {}, "Prolog"),
+        el("th", {}, "¿Prolog correcto?"), el("th", {}, "Laya"), el("th", {}, "¿Laya correcto?"),
+        el("th", {}, "¿Coinciden?"))),
+      el("tbody", {}, el("tr", {},
+        el("td", {}, c.esperada || "sin definir"),
+        el("td", {}, accion(datos.prolog)), el("td", {}, marca(c.prolog_correcto)),
+        el("td", {}, accion(datos.laya)), el("td", {}, marca(c.laya_correcto)),
+        el("td", {}, marca(c.coinciden)))),
+    )),
+  );
+}
+
+async function ejecutar(agentes) {
+  $("#error-entrada").textContent = "";
+  let estado;
+  try { estado = JSON.parse($("#estado").value); }
+  catch (e) { $("#error-entrada").textContent = "El estado no es un JSON válido: " + e.message; return; }
+  const botones = document.querySelectorAll("button");
+  botones.forEach((b) => (b.disabled = true));
+  try {
+    const respuesta = await fetch("/api/ejecutar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: $("#caso").value || "nuevo", estado, agentes,
+        esperada: $("#esperada").value || null, criterios: $("#criterios").value,
+      }),
+    });
+    const datos = await respuesta.json();
+    if (!respuesta.ok) { $("#error-entrada").textContent = datos.error; return; }
+    pintarProlog(datos.prolog);
+    pintarLaya(datos.laya);
+    pintarComparacion(datos);
+  } finally {
+    botones.forEach((b) => (b.disabled = false));
+  }
+}
+
+async function iniciar() {
+  await refrescarConfiguracion();
+  casos = await (await fetch("/api/casos")).json();
+  const selectorCaso = $("#caso");
+  for (const c of casos) selectorCaso.append(opcion(c.id, `${c.id} · ${c.categoria} · esperada: ${c.decision_esperada}`));
+  selectorCaso.append(opcion("", "Nuevo estado (escribir JSON)"));
+  $("#esperada").append(opcion("", "(sin decisión esperada)"));
+  for (const a of configuracion.acciones) $("#esperada").append(opcion(a, a));
+  for (const v of configuracion.versiones) $("#criterios").append(opcion(v, v));
+  $("#criterios").value = configuracion.version_por_defecto;
+  selectorCaso.addEventListener("change", elegirCaso);
+  document.querySelectorAll("button[data-agentes]").forEach((b) =>
+    b.addEventListener("click", () => ejecutar(b.dataset.agentes.split(","))));
+  elegirCaso();
+}
+
+iniciar();
+</script>
+</body>
+</html>
