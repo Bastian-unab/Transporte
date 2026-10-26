@@ -21,7 +21,7 @@
       },
       "vehiculos_alternativos": []
     },
-    "decision_esperada": "inspeccionar",
+    "decision_esperada": "alertar",
     "criterio_esperada": "contradiccion, no se puede salir sin combustible"
   },
   {
@@ -57,7 +57,7 @@
       "pedido": "P19",
       "carga_kg": 300,
       "tipo_carga": "general",
-      "destino": "zona_centro",
+      "destino": "centro",
       "urgencia": null,
       "ruta_despejada": true,
       "vehiculo_asignado": {

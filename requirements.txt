@@ -1,0 +1,6 @@
+# Python 3.10 o superior.
+# Laya instala también PyTorch y transformers (varios GB la primera vez).
+laya==0.4.12
+
+# El front (app/servidor.py) y las pruebas usan solo la biblioteca estándar de Python.
+# SWI-Prolog no se instala con pip: https://www.swi-prolog.org/download/stable
