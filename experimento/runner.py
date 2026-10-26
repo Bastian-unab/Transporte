@@ -1,47 +1,57 @@
-import json
-import subprocess
-import os
+import sys
+from pathlib import Path
 
-def llamar_prolog(ruta, idcaso):
-    comando = ["swipl", "prolog/ejecutar.pl", ruta, idcaso]
-    proceso = subprocess.run(comando, capture_output=True, text=True, check=True)
-    texto = proceso.stdout.strip()
-    diccionario = json.loads(texto)
-    return diccionario
+RAIZ = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(RAIZ))
 
-def llamar_laya(estado):
-    falso_dict = {"accion_laya": "pendiente"}
-    return falso_dict
+from laya_agent.casos import cargar_casos
+from laya_agent.ejecutar_caso import ejecutar_ambos
+from laya_agent.preguntas import VERSION_POR_DEFECTO
+import laya_agent.agente_laya as agente_laya
 
-def iniciar(ruta):
-    if not os.path.exists(ruta):
-        print("archivo no existe")
+def main():
+    print("Cargando modelo Laya en memoria...\n")
+    agente_laya.precargar_laya()
+    
+    casos = cargar_casos()
+    if not casos:
+        print("No se encontraron casos en la carpeta 'casos/'.")
         return
-
-    archivo = open(ruta, 'r', encoding='utf-8')
-    casos = json.load(archivo)
-    archivo.close()
-
-    print("id | esperada | prolog | laya | estado")
-    print("-" * 50)
+        
+    print(f"{'ID':<4} | {'Estado_Pedido':<14} | {'Esperada':<12} | {'Prolog (Decisión/Justificación)':<42} | {'Laya (Acción/Confianza)':<25} | {'¿Correctos? (P/L)':<17} | {'Observación (Faltante/Contradicción)'}")
+    print("-" * 165)
 
     for caso in casos:
-        idcaso = caso["id"]
-        esperada = caso.get("decision_esperada", "nada")
+        id_caso = caso["id"]
+        estado = caso["estado"]
+        esperada = caso.get("decision_esperada", "N/A")
         
-        res_prolog = llamar_prolog(ruta, idcaso)
-        accion_p = res_prolog.get("accion", "error")
+        resultado = ejecutar_ambos(estado, esperada, VERSION_POR_DEFECTO, con_prolog=True, con_laya=True)
         
-        res_laya = llamar_laya(caso["estado"])
-        accion_l = res_laya.get("accion_laya", "error")
-        
-        if accion_p == esperada:
-            estatus = "bien"
+        prolog_data = resultado["prolog"]
+        if prolog_data and not prolog_data["error"]:
+            accion_p = prolog_data["accion"]
+            justif_p = prolog_data["justificacion"][-1][:30] + "..." if prolog_data["justificacion"] else "sin regla"
+            obs_p = ", ".join(prolog_data["faltantes"] + prolog_data["contradicciones"]) or "Normal"
         else:
-            estatus = "mal"
-        
-        print(f"{idcaso} | {esperada} | {accion_p} | {accion_l} | {estatus}")
+            accion_p = "ERROR"
+            justif_p = prolog_data["error"][:30] if prolog_data else "Fallo puente"
+            obs_p = "-"
+
+        laya_data = resultado["laya"]
+        if laya_data and not laya_data["error"]:
+            accion_l = laya_data["accion"]
+            confianza = f"{laya_data['confianza']:.2f}"
+        else:
+            accion_l = "ERROR"
+            confianza = "-"
+
+        comp = resultado["comparacion"]
+        p_corr = "Sí" if comp["prolog_correcto"] else "No"
+        l_corr = "Sí" if comp["laya_correcto"] else "No"
+
+        fila = f"{id_caso:<4} | {estado.get('pedido', 'N/A'):<14} | {esperada:<12} | {accion_p:<12} (Justif: {justif_p:<17}) | {accion_l:<10} (Conf: {confianza:<4}) | {p_corr:<7} / {l_corr:<7} | {obs_p}"
+        print(fila)
 
 if __name__ == "__main__":
-    iniciar("casos/casos_directa_paso1.json")
-    iniciar("casos/casos_contradiccion.json")
+    main()

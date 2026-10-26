@@ -1,20 +1,18 @@
-# Proyecto 2
+# Proyecto 2: Despacho de vehículos y carga local
 
-# 1.- Requisitos
-* Python 3.10 o superior
-* Librería Laya (`pip install laya`)
-* SWI-Prolog 9.x o superior con `swipl` en el PATH (probado con 9.0.4 y 10.1)
+Este repositorio contiene la solución conjunta para comparar inferencia lógica (Prolog) y decisión estadística (Laya) en un dominio de transporte logístico.
 
-# 2.- instalación
-* Clonar el repositorio.
-* Instalar la librería Laya en la terminal: `pip install laya`
+## 1. Requisitos
+- Python 3.10 o superior.
+- SWI-Prolog 9.x o superior (asegurarse de que `swipl` esté agregado al PATH del sistema).
+- Conexión a internet estable para la primera descarga del modelo Laya.
 
-# 3.- Estructura del repositorio
-* `docs/`: Documentación del modelo y estado canónico.
-* `prolog/`: Base de conocimiento, hechos y reglas.
-* `laya_agent/`: Script de integración con el modelo Laya.
-* `casos/`: Batería de pruebas en formato JSON.
-* `experimento/`: Scripts para ejecutar la comparación y obtener métricas.
-
-# 4.- Ejecucion
-python experimento/runner.py
+## 2. Instalación
+Clona el repositorio en una carpeta limpia y configura el entorno virtual:
+```bash
+git clone <url-del-repositorio>
+cd Transporte
+python -m venv venv
+# Activar entorno en Windows: venv\Scripts\activate
+# Activar entorno en Linux/Mac: source venv/bin/activate
+pip install -r requirements.txt
