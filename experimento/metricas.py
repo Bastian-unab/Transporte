@@ -1,76 +1,53 @@
-import sys
-import pathlib
+import json
+from pathlib import Path
 
-raiz = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(raiz))
 
-from laya_agent.casos import cargar_casos
-from laya_agent.ejecutar_caso import ejecutar_ambos
-import laya_agent.agente_laya as laya_mod
+def mostrar_aciertos(nombre, casos):
+    total = len(casos)
+    prolog = sum(caso["comparacion"]["prolog_correcto"] is True for caso in casos)
+    laya = sum(caso["comparacion"]["laya_correcto"] is True for caso in casos)
+
+    print(
+        f"{nombre}: Prolog {prolog}/{total} ({prolog / total:.0%}) | "
+        f"Laya {laya}/{total} ({laya / total:.0%})"
+    )
+
 
 def main():
-    '''calcula metricas de los agentes'''
-    print("midiendo agentes...")
-    laya_mod.precargar_laya()
-    
-    casos = cargar_casos()
-    
-    total = 0
-    ok_p = 0
-    ok_l = 0
-    cat_p = {}
-    cat_l = {}
-    dif = []
-    dudas = []
+    archivo = Path(__file__).resolve().parent / "resultados" / "resultados.json"
+    if not archivo.is_file():
+        raise SystemExit("Primero ejecuta python experimento/runner.py")
 
-    for c in casos:
-        total += 1
-        id_c = c["id"]
-        cat = c.get("categoria", "otra")
-        est = c["estado"]
-        esp = c.get("decision_esperada", "")
-        
-        if cat not in cat_p:
-            cat_p[cat] = 0
-            cat_l[cat] = 0
+    corrida = json.loads(archivo.read_text(encoding="utf-8"))
+    casos = corrida["casos"]
+    if not casos:
+        raise SystemExit("La corrida guardada no contiene casos.")
 
-        res = ejecutar_ambos(est, esp, "v1", con_prolog=True, con_laya=True)
-        
-        comp = res["comparacion"]
-        bien_p = comp["prolog_correcto"]
-        bien_l = comp["laya_correcto"]
-        
-        if bien_p:
-            ok_p += 1
-            cat_p[cat] += 1
-        
-        if bien_l:
-            ok_l += 1
-            cat_l[cat] += 1
-            
-        if bien_p != bien_l:
-            dif.append(id_c)
-            
-        laya = res["laya"]
-        if laya and not laya["error"]:
-            conf = laya["confianza"]
-            if conf < 0.6:
-                dudas.append(id_c)
-                
-    print("\n--- globales ---")
-    print(f"total: {total}")
-    print(f"prolog acierta: {ok_p}")
-    print(f"laya acierta: {ok_l}")
-    
-    print("\n--- por categoria ---")
-    for k in cat_p:
-        print(f"{k} -> p: {cat_p[k]}, l: {cat_l[k]}")
-        
-    print("\n--- difieren ---")
-    print(f"casos: {dif}")
-    
-    print("\n--- laya duda (< 0.6) ---")
-    print(f"casos: {dudas}")
+    categorias = {}
+    desacuerdos = []
+    baja_confianza = []
+
+    for caso in casos:
+        categorias.setdefault(caso["categoria"], []).append(caso)
+
+        if caso["comparacion"]["coinciden"] is False:
+            desacuerdos.append(caso["id"])
+
+        confianza = caso["laya"]["confianza"]
+        if confianza is not None and confianza < 0.60:
+            baja_confianza.append(f"{caso['id']} ({confianza:.4f})")
+
+    print(f"Criterios de Laya: {corrida['version_criterios']}")
+    print(f"Fallos de ejecución: {corrida['fallos_ejecucion']}")
+    mostrar_aciertos("Total", casos)
+
+    print("\nAciertos por categoría")
+    for categoria, grupo in categorias.items():
+        mostrar_aciertos(categoria, grupo)
+
+    print(f"\nDesacuerdos ({len(desacuerdos)}): {', '.join(desacuerdos) or 'ninguno'}")
+    print(f"Confianza de Laya menor a 0.60: {', '.join(baja_confianza) or 'ninguno'}")
+
 
 if __name__ == "__main__":
     main()
