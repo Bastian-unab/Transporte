@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Central de despacho · Prolog vs Laya</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232a78d6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7h11v9H3zM14 10h4l3 3v3h-7z'/%3E%3Ccircle cx='7' cy='17.5' r='1.8'/%3E%3Ccircle cx='17' cy='17.5' r='1.8'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="barra">
+    <div class="marca">
+      <svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+      <div>
+        <h1>Central de despacho</h1>
+        <p>Mismo estado, dos agentes: reglas en Prolog y decisión tipada en Laya</p>
+      </div>
+    </div>
+    <div class="estado-agentes">
+      <span class="pill" id="pill-prolog" title="Estado del proceso Prolog"><i class="punto"></i>Prolog <b>…</b></span>
+      <span class="pill" id="pill-laya" title="Estado del modelo Laya"><i class="punto"></i>Laya <b>…</b></span>
+      <button type="button" class="boton-icono" id="btn-tema" title="Cambiar tema claro/oscuro" aria-label="Cambiar tema">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <nav class="pestanas" role="tablist">
+    <button type="button" role="tab" class="pestana activa" data-vista="caso">Caso</button>
+    <button type="button" role="tab" class="pestana" data-vista="experimento">Experimento · 20 casos</button>
+    <span class="espacio"></span>
+    <button type="button" class="boton primario" id="btn-todos">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg>
+      Ejecutar los 20 casos
+    </button>
+  </nav>
+
+  <main>
+    <!-- ================= VISTA CASO ================= -->
+    <div class="vista" id="vista-caso">
+      <aside class="lista-casos" aria-label="Casos de prueba">
+        <div class="lista-cabecera">
+          <h2>Casos</h2>
+          <button type="button" class="boton chico" id="btn-nuevo">+ Caso nuevo</button>
+        </div>
+        <div id="lista"></div>
+      </aside>
+
+      <section class="contenido">
+        <article class="tarjeta" id="cabecera-caso"></article>
+
+        <article class="tarjeta">
+          <div class="tarjeta-titulo">
+            <h3>Estado común <span class="sutil">· lo que reciben ambos agentes</span></h3>
+            <div class="tabs-chicas" role="tablist" id="tabs-estado">
+              <button type="button" class="activa" data-tab="formulario">Formulario</button>
+              <button type="button" data-tab="json">JSON</button>
+              <button type="button" data-tab="texto">Texto que lee Laya</button>
+            </div>
+          </div>
+          <div id="panel-formulario"></div>
+          <div id="panel-json" class="oculto">
+            <textarea id="editor-json" spellcheck="false" aria-label="Estado en JSON"></textarea>
+            <p class="error-json oculto" id="error-json"></p>
+          </div>
+          <div id="panel-texto" class="oculto">
+            <p class="sutil nota">Traducción mecánica campo por campo (laya_agent/estado_texto.py): no agrega conclusiones.</p>
+            <pre class="texto-laya" id="texto-laya"></pre>
+          </div>
+          <div class="acciones-estado">
+            <span class="aviso-modificado oculto" id="aviso-modificado">Estado modificado: ya no es el caso original</span>
+            <span class="espacio"></span>
+            <button type="button" class="boton" id="btn-restaurar">Restaurar</button>
+            <button type="button" class="boton primario" id="btn-ejecutar" title="Ctrl + Enter">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg>
+              Ejecutar ambos agentes
+            </button>
+          </div>
+        </article>
+
+        <div id="resultados"></div>
+
+        <article class="tarjeta" id="consola">
+          <div class="tarjeta-titulo">
+            <h3>Consola Prolog <span class="sutil">· consultas sobre este estado</span></h3>
+          </div>
+          <div class="sugerencias" id="sugerencias"></div>
+          <form class="linea-consulta" id="form-consulta" autocomplete="off">
+            <span class="prompt">?-</span>
+            <input id="entrada-consulta" spellcheck="false" placeholder="vehiculo_apto(p05, V)" aria-label="Consulta Prolog">
+            <button type="submit" class="boton">Consultar</button>
+          </form>
+          <div id="salida-consulta"></div>
+        </article>
+      </section>
+    </div>
+
+    <!-- ================= VISTA EXPERIMENTO ================= -->
+    <div class="vista oculto" id="vista-experimento">
+      <section class="contenido ancho">
+        <article class="tarjeta">
+          <div class="tarjeta-titulo">
+            <div>
+              <h3>Comparación experimental</h3>
+              <p class="sutil" id="exp-subtitulo">Ejecuta los 20 casos con ambos agentes. Las decisiones esperadas se definieron antes de ejecutar.</p>
+            </div>
+            <div class="grupo-botones">
+              <button type="button" class="boton" id="btn-descargar" disabled>Descargar CSV</button>
+              <button type="button" class="boton primario" id="btn-todos-2">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg>
+                Ejecutar los 20 casos
+              </button>
+            </div>
+          </div>
+          <div class="progreso oculto" id="progreso"><div class="progreso-barra" id="progreso-barra"></div><span id="progreso-texto"></span></div>
+          <div id="exp-metricas"></div>
+        </article>
+        <div id="exp-tablas"></div>
+      </section>
+    </div>
+  </main>
+
+  <div class="tooltip oculto" id="tooltip" role="tooltip"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

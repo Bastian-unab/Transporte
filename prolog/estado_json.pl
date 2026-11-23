@@ -14,7 +14,7 @@
     Uso:
         ?- [prolog/reglas, prolog/estado_json].
         ?- cargar_estado('mi_estado.json', P), explicar(P).
-        ?- cargar_caso('casos/casos_directa_paso1.json', 'C05', P, Esperada).
+        ?- cargar_caso('casos/casos.json', 'C05', P, Esperada).
 */
 
 :- if(exists_source(library(json))).       % SWI-Prolog 10 o más reciente

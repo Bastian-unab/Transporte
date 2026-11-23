@@ -1,14 +1,14 @@
-# Entorno virtual
 venv/
+.venv/
 env/
 .env
 
-# Caché de Python
 __pycache__/
-
-# Caché de Prolog
+*.pyc
 *.qlf
 
-# Modelos descargados o datos pesados para laya (en caso de usarlos)
 *.pt
 *.bin
+*.safetensors
+
+/registros/laya.jsonl

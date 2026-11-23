@@ -5,7 +5,7 @@
     cambian de decisión. Ejecutar desde la carpeta raíz del repositorio:
 
       swipl prolog/verificar_casos.pl                       (todos los .json de la carpeta casos)
-      swipl prolog/verificar_casos.pl casos/casos_directa_paso1.json
+      swipl prolog/verificar_casos.pl casos/casos.json
 */
 
 :- initialization(main, main).
@@ -16,7 +16,7 @@
 main :-
     current_prolog_flag(argv, Argumentos),
     (   Argumentos == []
-    ->  expand_file_name('casos/*.json', Archivos)
+    ->  Archivos = ['casos/casos.json']
     ;   Archivos = Argumentos
     ),
     (   Archivos == []

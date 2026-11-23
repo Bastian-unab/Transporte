@@ -1,0 +1,5593 @@
+{
+  "fecha": "2026-11-23T18:30:07",
+  "version_prolog": "10.0.2",
+  "version_laya": "0.5.0",
+  "metricas": {
+    "n": 20,
+    "prolog_aciertos": 20,
+    "laya_aciertos": 3,
+    "acuerdo": 3,
+    "laya_confianza_aciertos": 0.397,
+    "laya_confianza_errores": 0.421,
+    "laya_estables": 6,
+    "elecciones_laya": {
+      "esperar": 18,
+      "inspeccionar": 2
+    },
+    "por_categoria": {
+      "directa": {
+        "n": 4,
+        "prolog": 4,
+        "laya": 1
+      },
+      "un_paso": {
+        "n": 4,
+        "prolog": 4,
+        "laya": 1
+      },
+      "encadenada": {
+        "n": 4,
+        "prolog": 4,
+        "laya": 1
+      },
+      "incompleta": {
+        "n": 4,
+        "prolog": 4,
+        "laya": 0
+      },
+      "contradiccion": {
+        "n": 4,
+        "prolog": 4,
+        "laya": 0
+      }
+    },
+    "confusion_laya": {
+      "despachar": {
+        "esperar": 2,
+        "inspeccionar": 1
+      },
+      "reasignar": {
+        "esperar": 3,
+        "inspeccionar": 1
+      },
+      "esperar": {
+        "esperar": 3
+      },
+      "inspeccionar": {
+        "esperar": 6
+      },
+      "alertar": {
+        "esperar": 4
+      }
+    },
+    "diagnostico": {
+      "urgencia": {
+        "n": 19,
+        "coinciden": 7
+      },
+      "falta_dato": {
+        "n": 20,
+        "coinciden": 3
+      },
+      "contradiccion": {
+        "n": 20,
+        "coinciden": 3
+      },
+      "asignado_sirve": {
+        "n": 20,
+        "coinciden": 8
+      }
+    }
+  },
+  "casos": [
+    {
+      "id": "C01",
+      "categoria": "directa",
+      "descripcion": "Pedido urgente con una camioneta lista y la ruta libre (el ejemplo del contrato del grupo).",
+      "estado": {
+        "pedido": "P01",
+        "carga_kg": 800,
+        "tipo_carga": "general",
+        "destino": "zona_norte",
+        "urgencia": "alta",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V10",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 1000,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": []
+      },
+      "esperada": "despachar",
+      "criterio": "Todo lo necesario está explícito: el vehículo asignado está disponible, fuera del taller, con combustible y conductor; 800 kg caben en 1000 kg; la ruta está despejada y el pedido es urgente.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "despachar",
+        "candidatas": [
+          "despachar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": true,
+        "justificacion": [
+          "accion_candidata(p01,despachar)   <- regla",
+          "    asignado(p01,v10)   <- hecho",
+          "    vehiculo_apto(p01,v10)   <- regla",
+          "        operativo(v10)   <- regla",
+          "            disponible(v10,si)   <- hecho",
+          "            en_mantencion(v10,no)   <- hecho",
+          "            combustible(v10,suficiente)   <- hecho",
+          "            conductor_disponible(v10,si)   <- hecho",
+          "        tiene_capacidad(p01,v10)   <- regla",
+          "            carga_kg(p01,800)   <- hecho",
+          "            capacidad_kg(v10,1000)   <- hecho",
+          "            800=<1000   <- cálculo",
+          "        tipo_compatible(p01,v10)   <- regla",
+          "            tipo_carga(p01,general)   <- hecho",
+          "            vehiculo(v10)   <- hecho",
+          "        puede_ingresar(p01,v10)   <- regla",
+          "            destino(p01,zona_norte)   <- hecho",
+          "            tipo_vehiculo(v10,camioneta)   <- hecho",
+          "            no se puede demostrar zona_restringida(zona_norte,camioneta)   <- negación por falla (falla: zona_restringida(zona_norte,camioneta))",
+          "    ruta_despejada(p01,si)   <- hecho",
+          "    conviene_salir(p01,v10)   <- regla",
+          "        urgencia(p01,alta)   <- hecho"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p01,despachar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p01,v10)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_apto(p01,v10)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "operativo(v10)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "disponible(v10,si)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "en_mantencion(v10,no)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "combustible(v10,suficiente)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conductor_disponible(v10,si)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tiene_capacidad(p01,v10)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "carga_kg(p01,800)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_kg(v10,1000)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "800=<1000",
+            "nivel": 3,
+            "tipo": "calculo"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_compatible(p01,v10)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_carga(p01,general)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo(v10)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "puede_ingresar(p01,v10)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "destino(p01,zona_norte)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_vehiculo(v10,camioneta)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "zona_restringida(zona_norte,camioneta)",
+            "meta": "zona_restringida(zona_norte,camioneta)",
+            "nivel": 3,
+            "tipo": "negacion"
+          },
+          {
+            "falla": null,
+            "meta": "ruta_despejada(p01,si)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conviene_salir(p01,v10)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgencia(p01,alta)",
+            "nivel": 2,
+            "tipo": "hecho"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 6.5,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1473,
+          "reasignar": 0.0395,
+          "esperar": 0.4653,
+          "inspeccionar": 0.2299,
+          "alertar": 0.1179
+        },
+        "confianza": 0.4653,
+        "margen": 0.2354,
+        "concentracion": 0.1576,
+        "estabilidad": {
+          "coinciden": 5,
+          "total": 5,
+          "votos": {
+            "esperar": 5
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.4846
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.4331
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "esperar",
+            "confianza": 0.3183
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.5009
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.5897
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0388,
+              "media": 0.7505,
+              "alta": 0.2107
+            },
+            "confianza": 0.7505
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.6957
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8124
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9927
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P01. Carga: 800 kg. Tipo de carga: general. Destino: zona norte. Urgencia: alta. Ruta despejada: sí.\nVehículo asignado V10. Tipo: camioneta. Capacidad: 1000 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: ninguno.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 12435.0,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "despachar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "alta",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.6957,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.8124,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9927,
+          "prolog": true,
+          "coincide": true
+        }
+      },
+      "observacion": "Laya eligió esperar (0.47); a la esperada le dio 0.15."
+    },
+    {
+      "id": "C02",
+      "categoria": "directa",
+      "descripcion": "Pedido urgente con el vehículo listo, pero la ruta está cortada.",
+      "estado": {
+        "pedido": "P02",
+        "carga_kg": 500,
+        "tipo_carga": "general",
+        "destino": "zona_sur",
+        "urgencia": "alta",
+        "ruta_despejada": false,
+        "vehiculo_asignado": {
+          "id": "V20",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": []
+      },
+      "esperada": "alertar",
+      "criterio": "La ruta no está despejada, así que no se puede despachar; como el pedido es urgente, no corresponde esperar sin más: el supervisor debe decidir (otra ruta, reprogramar o avisar al cliente).",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "alertar",
+        "candidatas": [
+          "alertar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": true,
+        "justificacion": [
+          "accion_candidata(p02,alertar)   <- regla",
+          "    urgente(p02)   <- regla",
+          "        urgencia(p02,alta)   <- hecho",
+          "    ruta_despejada(p02,no)   <- hecho"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p02,alertar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgente(p02)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgencia(p02,alta)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "ruta_despejada(p02,no)",
+            "nivel": 1,
+            "tipo": "hecho"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.8,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1794,
+          "reasignar": 0.0586,
+          "esperar": 0.4525,
+          "inspeccionar": 0.2089,
+          "alertar": 0.1006
+        },
+        "confianza": 0.4525,
+        "margen": 0.2436,
+        "concentracion": 0.1355,
+        "estabilidad": {
+          "coinciden": 4,
+          "total": 5,
+          "votos": {
+            "esperar": 4,
+            "inspeccionar": 1
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.5099
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.4149
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3083
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.4646
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.6061
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0357,
+              "media": 0.5839,
+              "alta": 0.3804
+            },
+            "confianza": 0.5839
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8238
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9269
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9951
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P02. Carga: 500 kg. Tipo de carga: general. Destino: zona sur. Urgencia: alta. Ruta despejada: no.\nVehículo asignado V20. Tipo: furgón. Capacidad: 3500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: ninguno.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2080.6,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "alertar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "alta",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.8238,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.9269,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9951,
+          "prolog": true,
+          "coincide": true
+        }
+      },
+      "observacion": "Laya eligió esperar (0.45); a la esperada le dio 0.10. La respuesta de Laya depende del orden de las alternativas (4 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C03",
+      "categoria": "directa",
+      "descripcion": "Pedido sin urgencia con la ruta cortada.",
+      "estado": {
+        "pedido": "P03",
+        "carga_kg": 400,
+        "tipo_carga": "general",
+        "destino": "zona_oriente",
+        "urgencia": "baja",
+        "ruta_despejada": false,
+        "vehiculo_asignado": {
+          "id": "V30",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 1500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": []
+      },
+      "esperada": "esperar",
+      "criterio": "La ruta está cortada y el pedido no es urgente: no hace falta molestar al supervisor, basta con esperar a que se despeje.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "esperar",
+        "candidatas": [
+          "esperar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": true,
+        "justificacion": [
+          "accion_candidata(p03,esperar)   <- regla",
+          "    ruta_despejada(p03,no)   <- hecho",
+          "    no se puede demostrar urgente(p03)   <- negación por falla (falla: urgencia(p03,alta))"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p03,esperar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "ruta_despejada(p03,no)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "urgencia(p03,alta)",
+            "meta": "urgente(p03)",
+            "nivel": 1,
+            "tipo": "negacion"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.3,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1852,
+          "reasignar": 0.0435,
+          "esperar": 0.4291,
+          "inspeccionar": 0.2449,
+          "alertar": 0.0973
+        },
+        "confianza": 0.4291,
+        "margen": 0.1843,
+        "concentracion": 0.1407,
+        "estabilidad": {
+          "coinciden": 4,
+          "total": 5,
+          "votos": {
+            "esperar": 4,
+            "inspeccionar": 1
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.4512
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.3748
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3424
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.458
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.6341
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0461,
+              "media": 0.6268,
+              "alta": 0.3271
+            },
+            "confianza": 0.6268
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8064
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8385
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9922
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P03. Carga: 400 kg. Tipo de carga: general. Destino: zona oriente. Urgencia: baja. Ruta despejada: no.\nVehículo asignado V30. Tipo: camioneta. Capacidad: 1500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: ninguno.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2107.1,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "esperar",
+        "prolog_correcto": true,
+        "laya_correcto": true,
+        "coinciden": true
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "baja",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.8064,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.8385,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9922,
+          "prolog": true,
+          "coincide": true
+        }
+      },
+      "observacion": "Laya acierta con confianza 0.43. La respuesta de Laya depende del orden de las alternativas (4 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C04",
+      "categoria": "directa",
+      "descripcion": "El vehículo asignado está en el taller y hay un furgón alternativo listo.",
+      "estado": {
+        "pedido": "P04",
+        "carga_kg": 1200,
+        "tipo_carga": "general",
+        "destino": "zona_poniente",
+        "urgencia": "media",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V40",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": false,
+          "en_mantencion": true,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": [
+          {
+            "id": "V41",
+            "tipo_vehiculo": "furgon",
+            "capacidad_kg": 3500,
+            "disponible": true,
+            "en_mantencion": false,
+            "combustible": "suficiente",
+            "conductor_disponible": true
+          }
+        ]
+      },
+      "esperada": "reasignar",
+      "criterio": "El estado dice explícitamente que el asignado no está disponible y está en mantención (dato coherente, no contradictorio); el alternativo es del mismo tipo y está listo.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "reasignar",
+        "candidatas": [
+          "reasignar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p04,reasignar)   <- regla",
+          "    asignado(p04,v40)   <- hecho",
+          "    no se puede demostrar vehiculo_apto(p04,v40)   <- negación por falla (falla: operativo(v40))",
+          "    alternativa_apta(p04,v41)   <- regla",
+          "        alternativo(p04,v41)   <- hecho",
+          "        vehiculo_apto(p04,v41)   <- regla",
+          "            operativo(v41)   <- regla",
+          "                disponible(v41,si)   <- hecho",
+          "                en_mantencion(v41,no)   <- hecho",
+          "                combustible(v41,suficiente)   <- hecho",
+          "                conductor_disponible(v41,si)   <- hecho",
+          "            tiene_capacidad(p04,v41)   <- regla",
+          "                carga_kg(p04,1200)   <- hecho",
+          "                capacidad_kg(v41,3500)   <- hecho",
+          "                1200=<3500   <- cálculo",
+          "            tipo_compatible(p04,v41)   <- regla",
+          "                tipo_carga(p04,general)   <- hecho",
+          "                vehiculo(v41)   <- hecho",
+          "            puede_ingresar(p04,v41)   <- regla",
+          "                destino(p04,zona_poniente)   <- hecho",
+          "                tipo_vehiculo(v41,furgon)   <- hecho",
+          "                no se puede demostrar zona_restringida(zona_poniente,furgon)   <- negación por falla (falla: zona_restringida(zona_poniente,furgon))"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p04,reasignar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p04,v40)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "operativo(v40)",
+            "meta": "vehiculo_apto(p04,v40)",
+            "nivel": 1,
+            "tipo": "negacion"
+          },
+          {
+            "falla": null,
+            "meta": "alternativa_apta(p04,v41)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "alternativo(p04,v41)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_apto(p04,v41)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "operativo(v41)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "disponible(v41,si)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "en_mantencion(v41,no)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "combustible(v41,suficiente)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conductor_disponible(v41,si)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tiene_capacidad(p04,v41)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "carga_kg(p04,1200)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_kg(v41,3500)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "1200=<3500",
+            "nivel": 4,
+            "tipo": "calculo"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_compatible(p04,v41)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_carga(p04,general)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo(v41)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "puede_ingresar(p04,v41)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "destino(p04,zona_poniente)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_vehiculo(v41,furgon)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "zona_restringida(zona_poniente,furgon)",
+            "meta": "zona_restringida(zona_poniente,furgon)",
+            "nivel": 4,
+            "tipo": "negacion"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.9,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1495,
+          "reasignar": 0.1644,
+          "esperar": 0.364,
+          "inspeccionar": 0.2602,
+          "alertar": 0.0618
+        },
+        "confianza": 0.364,
+        "margen": 0.1038,
+        "concentracion": 0.086,
+        "estabilidad": {
+          "coinciden": 4,
+          "total": 5,
+          "votos": {
+            "esperar": 4,
+            "inspeccionar": 1
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.5532
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.3909
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3503
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.3214
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.3163
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0501,
+              "media": 0.7088,
+              "alta": 0.2411
+            },
+            "confianza": 0.7088
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9279
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.786
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9863
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P04. Carga: 1200 kg. Tipo de carga: general. Destino: zona poniente. Urgencia: media. Ruta despejada: sí.\nVehículo asignado V40. Tipo: furgón. Capacidad: 3500 kg. Disponible: no. En mantención: sí. Combustible: suficiente. Conductor disponible: sí.\nVehículo alternativo V41. Tipo: furgón. Capacidad: 3500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2456.2,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "reasignar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "media",
+          "coincide": true
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.9279,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.786,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9863,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Laya eligió esperar (0.36); a la esperada le dio 0.16. La respuesta de Laya depende del orden de las alternativas (4 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C05",
+      "categoria": "un_paso",
+      "descripcion": "La carga pesa más de lo que soporta la camioneta asignada; hay un furgón libre.",
+      "estado": {
+        "pedido": "P05",
+        "carga_kg": 1200,
+        "tipo_carga": "general",
+        "destino": "zona_norte",
+        "urgencia": "media",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V50",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 1000,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": [
+          {
+            "id": "V51",
+            "tipo_vehiculo": "furgon",
+            "capacidad_kg": 3500,
+            "disponible": true,
+            "en_mantencion": false,
+            "combustible": "suficiente",
+            "conductor_disponible": true
+          }
+        ]
+      },
+      "esperada": "reasignar",
+      "criterio": "Una regla: la capacidad (1200 kg > 1000 kg). El asignado está operativo, pero la carga no cabe; el furgón alternativo sí tiene capacidad.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "reasignar",
+        "candidatas": [
+          "reasignar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p05,reasignar)   <- regla",
+          "    asignado(p05,v50)   <- hecho",
+          "    no se puede demostrar vehiculo_apto(p05,v50)   <- negación por falla (falla: tiene_capacidad(p05,v50))",
+          "    alternativa_apta(p05,v51)   <- regla",
+          "        alternativo(p05,v51)   <- hecho",
+          "        vehiculo_apto(p05,v51)   <- regla",
+          "            operativo(v51)   <- regla",
+          "                disponible(v51,si)   <- hecho",
+          "                en_mantencion(v51,no)   <- hecho",
+          "                combustible(v51,suficiente)   <- hecho",
+          "                conductor_disponible(v51,si)   <- hecho",
+          "            tiene_capacidad(p05,v51)   <- regla",
+          "                carga_kg(p05,1200)   <- hecho",
+          "                capacidad_kg(v51,3500)   <- hecho",
+          "                1200=<3500   <- cálculo",
+          "            tipo_compatible(p05,v51)   <- regla",
+          "                tipo_carga(p05,general)   <- hecho",
+          "                vehiculo(v51)   <- hecho",
+          "            puede_ingresar(p05,v51)   <- regla",
+          "                destino(p05,zona_norte)   <- hecho",
+          "                tipo_vehiculo(v51,furgon)   <- hecho",
+          "                no se puede demostrar zona_restringida(zona_norte,furgon)   <- negación por falla (falla: zona_restringida(zona_norte,furgon))"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p05,reasignar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p05,v50)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "tiene_capacidad(p05,v50)",
+            "meta": "vehiculo_apto(p05,v50)",
+            "nivel": 1,
+            "tipo": "negacion"
+          },
+          {
+            "falla": null,
+            "meta": "alternativa_apta(p05,v51)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "alternativo(p05,v51)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_apto(p05,v51)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "operativo(v51)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "disponible(v51,si)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "en_mantencion(v51,no)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "combustible(v51,suficiente)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conductor_disponible(v51,si)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tiene_capacidad(p05,v51)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "carga_kg(p05,1200)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_kg(v51,3500)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "1200=<3500",
+            "nivel": 4,
+            "tipo": "calculo"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_compatible(p05,v51)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_carga(p05,general)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo(v51)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "puede_ingresar(p05,v51)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "destino(p05,zona_norte)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_vehiculo(v51,furgon)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "zona_restringida(zona_norte,furgon)",
+            "meta": "zona_restringida(zona_norte,furgon)",
+            "nivel": 4,
+            "tipo": "negacion"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 2.2,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1684,
+          "reasignar": 0.1753,
+          "esperar": 0.3168,
+          "inspeccionar": 0.2865,
+          "alertar": 0.053
+        },
+        "confianza": 0.3168,
+        "margen": 0.0304,
+        "concentracion": 0.0784,
+        "estabilidad": {
+          "coinciden": 3,
+          "total": 5,
+          "votos": {
+            "esperar": 3,
+            "inspeccionar": 2
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.4804
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.3456
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.4059
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.3243
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3223
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0548,
+              "media": 0.7235,
+              "alta": 0.2217
+            },
+            "confianza": 0.7235
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9204
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9568
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9939
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P05. Carga: 1200 kg. Tipo de carga: general. Destino: zona norte. Urgencia: media. Ruta despejada: sí.\nVehículo asignado V50. Tipo: camioneta. Capacidad: 1000 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículo alternativo V51. Tipo: furgón. Capacidad: 3500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2371.7,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "reasignar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "media",
+          "coincide": true
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.9204,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.9568,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9939,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Laya eligió esperar (0.32); a la esperada le dio 0.18. La respuesta de Laya depende del orden de las alternativas (3 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C06",
+      "categoria": "un_paso",
+      "descripcion": "Carga refrigerada urgente asignada a un furgón común, sin vehículos alternativos.",
+      "estado": {
+        "pedido": "P06",
+        "carga_kg": 300,
+        "tipo_carga": "refrigerada",
+        "destino": "zona_sur",
+        "urgencia": "alta",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V60",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": []
+      },
+      "esperada": "alertar",
+      "criterio": "Una regla: la carga refrigerada solo puede ir en furgón refrigerado. El furgón asignado no sirve y no hay alternativos; como el pedido es urgente, debe intervenir el supervisor.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "alertar",
+        "candidatas": [
+          "alertar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p06,alertar)   <- regla",
+          "    urgente(p06)   <- regla",
+          "        urgencia(p06,alta)   <- hecho",
+          "    sin_vehiculo_apto(p06)   <- regla",
+          "        asignado(p06,v60)   <- hecho",
+          "        no se puede demostrar vehiculo_apto(p06,v60)   <- negación por falla (falla: tipo_compatible(p06,v60))",
+          "        no se puede demostrar alternativa_apta(p06,A)   <- negación por falla (falla: alternativo(p06,A))"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p06,alertar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgente(p06)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgencia(p06,alta)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "sin_vehiculo_apto(p06)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p06,v60)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "tipo_compatible(p06,v60)",
+            "meta": "vehiculo_apto(p06,v60)",
+            "nivel": 2,
+            "tipo": "negacion"
+          },
+          {
+            "falla": "alternativo(p06,A)",
+            "meta": "alternativa_apta(p06,A)",
+            "nivel": 2,
+            "tipo": "negacion"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.6,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.2146,
+          "reasignar": 0.0501,
+          "esperar": 0.4237,
+          "inspeccionar": 0.2098,
+          "alertar": 0.1018
+        },
+        "confianza": 0.4237,
+        "margen": 0.209,
+        "concentracion": 0.1274,
+        "estabilidad": {
+          "coinciden": 4,
+          "total": 5,
+          "votos": {
+            "esperar": 4,
+            "inspeccionar": 1
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.4369
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.3888
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3235
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.4302
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.5954
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0428,
+              "media": 0.7074,
+              "alta": 0.2498
+            },
+            "confianza": 0.7074
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.7326
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8948
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9928
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P06. Carga: 300 kg. Tipo de carga: refrigerada. Destino: zona sur. Urgencia: alta. Ruta despejada: sí.\nVehículo asignado V60. Tipo: furgón. Capacidad: 3500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: ninguno.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2107.6,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "alertar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "alta",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.7326,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.8948,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9928,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Laya eligió esperar (0.42); a la esperada le dio 0.10. La respuesta de Laya depende del orden de las alternativas (4 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C07",
+      "categoria": "un_paso",
+      "descripcion": "Pedido sin urgencia que llena casi toda la camioneta.",
+      "estado": {
+        "pedido": "P07",
+        "carga_kg": 1350,
+        "tipo_carga": "general",
+        "destino": "zona_oriente",
+        "urgencia": "baja",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V70",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 1500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": []
+      },
+      "esperada": "despachar",
+      "criterio": "Una regla: aprovechamiento. Aunque no hay urgencia, 1350 de 1500 kg es 90 % (sobre el umbral de 80 %): el viaje ya se aprovecha y no tiene sentido esperar para juntar más carga.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "despachar",
+        "candidatas": [
+          "despachar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": true,
+        "justificacion": [
+          "accion_candidata(p07,despachar)   <- regla",
+          "    asignado(p07,v70)   <- hecho",
+          "    vehiculo_apto(p07,v70)   <- regla",
+          "        operativo(v70)   <- regla",
+          "            disponible(v70,si)   <- hecho",
+          "            en_mantencion(v70,no)   <- hecho",
+          "            combustible(v70,suficiente)   <- hecho",
+          "            conductor_disponible(v70,si)   <- hecho",
+          "        tiene_capacidad(p07,v70)   <- regla",
+          "            carga_kg(p07,1350)   <- hecho",
+          "            capacidad_kg(v70,1500)   <- hecho",
+          "            1350=<1500   <- cálculo",
+          "        tipo_compatible(p07,v70)   <- regla",
+          "            tipo_carga(p07,general)   <- hecho",
+          "            vehiculo(v70)   <- hecho",
+          "        puede_ingresar(p07,v70)   <- regla",
+          "            destino(p07,zona_oriente)   <- hecho",
+          "            tipo_vehiculo(v70,camioneta)   <- hecho",
+          "            no se puede demostrar zona_restringida(zona_oriente,camioneta)   <- negación por falla (falla: zona_restringida(zona_oriente,camioneta))",
+          "    ruta_despejada(p07,si)   <- hecho",
+          "    conviene_salir(p07,v70)   <- regla",
+          "        urgencia(p07,baja)   <- hecho",
+          "        aprovechamiento_alto(p07,v70)   <- regla",
+          "            carga_kg(p07,1350)   <- hecho",
+          "            capacidad_kg(v70,1500)   <- hecho",
+          "            1500>0   <- cálculo",
+          "            umbral(aprovechamiento_alto,0.8)   <- hecho",
+          "            1350/1500>=0.8   <- cálculo"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p07,despachar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p07,v70)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_apto(p07,v70)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "operativo(v70)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "disponible(v70,si)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "en_mantencion(v70,no)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "combustible(v70,suficiente)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conductor_disponible(v70,si)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tiene_capacidad(p07,v70)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "carga_kg(p07,1350)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_kg(v70,1500)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "1350=<1500",
+            "nivel": 3,
+            "tipo": "calculo"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_compatible(p07,v70)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_carga(p07,general)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo(v70)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "puede_ingresar(p07,v70)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "destino(p07,zona_oriente)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_vehiculo(v70,camioneta)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "zona_restringida(zona_oriente,camioneta)",
+            "meta": "zona_restringida(zona_oriente,camioneta)",
+            "nivel": 3,
+            "tipo": "negacion"
+          },
+          {
+            "falla": null,
+            "meta": "ruta_despejada(p07,si)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conviene_salir(p07,v70)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgencia(p07,baja)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "aprovechamiento_alto(p07,v70)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "carga_kg(p07,1350)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_kg(v70,1500)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "1500>0",
+            "nivel": 3,
+            "tipo": "calculo"
+          },
+          {
+            "falla": null,
+            "meta": "umbral(aprovechamiento_alto,0.8)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "1350/1500>=0.8",
+            "nivel": 3,
+            "tipo": "calculo"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 2.4,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1909,
+          "reasignar": 0.0449,
+          "esperar": 0.4257,
+          "inspeccionar": 0.2409,
+          "alertar": 0.0975
+        },
+        "confianza": 0.4257,
+        "margen": 0.1848,
+        "concentracion": 0.137,
+        "estabilidad": {
+          "coinciden": 4,
+          "total": 5,
+          "votos": {
+            "esperar": 4,
+            "inspeccionar": 1
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.4288
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.3581
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3321
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.4557
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.6163
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0421,
+              "media": 0.6682,
+              "alta": 0.2897
+            },
+            "confianza": 0.6682
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.7876
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8657
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9935
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P07. Carga: 1350 kg. Tipo de carga: general. Destino: zona oriente. Urgencia: baja. Ruta despejada: sí.\nVehículo asignado V70. Tipo: camioneta. Capacidad: 1500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: ninguno.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2064.9,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "despachar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "baja",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.7876,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.8657,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9935,
+          "prolog": true,
+          "coincide": true
+        }
+      },
+      "observacion": "Laya eligió esperar (0.43); a la esperada le dio 0.19. La respuesta de Laya depende del orden de las alternativas (4 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C08",
+      "categoria": "un_paso",
+      "descripcion": "Pedido sin urgencia que ocupa muy poco del furgón.",
+      "estado": {
+        "pedido": "P08",
+        "carga_kg": 200,
+        "tipo_carga": "general",
+        "destino": "zona_poniente",
+        "urgencia": "baja",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V80",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 1500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": []
+      },
+      "esperada": "esperar",
+      "criterio": "Una regla: aprovechamiento. Sin urgencia y con 200 de 1500 kg (13 %, bajo el 80 %), conviene esperar para consolidar con otros pedidos aunque el vehículo esté listo.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "esperar",
+        "candidatas": [
+          "esperar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": true,
+        "justificacion": [
+          "accion_candidata(p08,esperar)   <- regla",
+          "    asignado(p08,v80)   <- hecho",
+          "    vehiculo_apto(p08,v80)   <- regla",
+          "        operativo(v80)   <- regla",
+          "            disponible(v80,si)   <- hecho",
+          "            en_mantencion(v80,no)   <- hecho",
+          "            combustible(v80,suficiente)   <- hecho",
+          "            conductor_disponible(v80,si)   <- hecho",
+          "        tiene_capacidad(p08,v80)   <- regla",
+          "            carga_kg(p08,200)   <- hecho",
+          "            capacidad_kg(v80,1500)   <- hecho",
+          "            200=<1500   <- cálculo",
+          "        tipo_compatible(p08,v80)   <- regla",
+          "            tipo_carga(p08,general)   <- hecho",
+          "            vehiculo(v80)   <- hecho",
+          "        puede_ingresar(p08,v80)   <- regla",
+          "            destino(p08,zona_poniente)   <- hecho",
+          "            tipo_vehiculo(v80,furgon)   <- hecho",
+          "            no se puede demostrar zona_restringida(zona_poniente,furgon)   <- negación por falla (falla: zona_restringida(zona_poniente,furgon))",
+          "    ruta_despejada(p08,si)   <- hecho",
+          "    no se puede demostrar conviene_salir(p08,v80)   <- negación por falla (falla: urgencia(p08,alta) / urgencia(p08,media) / aprovechamiento_alto(p08,v80))"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p08,esperar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p08,v80)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_apto(p08,v80)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "operativo(v80)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "disponible(v80,si)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "en_mantencion(v80,no)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "combustible(v80,suficiente)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conductor_disponible(v80,si)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tiene_capacidad(p08,v80)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "carga_kg(p08,200)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_kg(v80,1500)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "200=<1500",
+            "nivel": 3,
+            "tipo": "calculo"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_compatible(p08,v80)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_carga(p08,general)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo(v80)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "puede_ingresar(p08,v80)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "destino(p08,zona_poniente)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_vehiculo(v80,furgon)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "zona_restringida(zona_poniente,furgon)",
+            "meta": "zona_restringida(zona_poniente,furgon)",
+            "nivel": 3,
+            "tipo": "negacion"
+          },
+          {
+            "falla": null,
+            "meta": "ruta_despejada(p08,si)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "urgencia(p08,alta) / urgencia(p08,media) / aprovechamiento_alto(p08,v80)",
+            "meta": "conviene_salir(p08,v80)",
+            "nivel": 1,
+            "tipo": "negacion"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 2.0,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.2045,
+          "reasignar": 0.0512,
+          "esperar": 0.4536,
+          "inspeccionar": 0.1863,
+          "alertar": 0.1044
+        },
+        "confianza": 0.4536,
+        "margen": 0.249,
+        "concentracion": 0.1398,
+        "estabilidad": {
+          "coinciden": 5,
+          "total": 5,
+          "votos": {
+            "esperar": 5
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.4814
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.3942
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "esperar",
+            "confianza": 0.3202
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.4632
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.6088
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0468,
+              "media": 0.6217,
+              "alta": 0.3315
+            },
+            "confianza": 0.6217
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.7359
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9053
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9921
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P08. Carga: 200 kg. Tipo de carga: general. Destino: zona poniente. Urgencia: baja. Ruta despejada: sí.\nVehículo asignado V80. Tipo: furgón. Capacidad: 1500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: ninguno.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2066.0,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "esperar",
+        "prolog_correcto": true,
+        "laya_correcto": true,
+        "coinciden": true
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "baja",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.7359,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.9053,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9921,
+          "prolog": true,
+          "coincide": true
+        }
+      },
+      "observacion": "Laya acierta con confianza 0.45."
+    },
+    {
+      "id": "C09",
+      "categoria": "encadenada",
+      "descripcion": "Carga refrigerada con destino al centro asignada a un camión; el alternativo es un furgón refrigerado listo.",
+      "estado": {
+        "pedido": "P09",
+        "carga_kg": 900,
+        "tipo_carga": "refrigerada",
+        "destino": "centro",
+        "urgencia": "media",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V90",
+          "tipo_vehiculo": "camion",
+          "capacidad_kg": 8000,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": [
+          {
+            "id": "V91",
+            "tipo_vehiculo": "furgon_refrigerado",
+            "capacidad_kg": 3000,
+            "disponible": true,
+            "en_mantencion": false,
+            "combustible": "suficiente",
+            "conductor_disponible": true
+          }
+        ]
+      },
+      "esperada": "reasignar",
+      "criterio": "Varias relaciones: el camión no sirve porque la carga refrigerada exige furgón refrigerado (y además los camiones no entran al centro); el alternativo es refrigerado, está operativo, tiene capacidad y puede entrar al centro.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "reasignar",
+        "candidatas": [
+          "reasignar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p09,reasignar)   <- regla",
+          "    asignado(p09,v90)   <- hecho",
+          "    no se puede demostrar vehiculo_apto(p09,v90)   <- negación por falla (falla: tipo_compatible(p09,v90))",
+          "    alternativa_apta(p09,v91)   <- regla",
+          "        alternativo(p09,v91)   <- hecho",
+          "        vehiculo_apto(p09,v91)   <- regla",
+          "            operativo(v91)   <- regla",
+          "                disponible(v91,si)   <- hecho",
+          "                en_mantencion(v91,no)   <- hecho",
+          "                combustible(v91,suficiente)   <- hecho",
+          "                conductor_disponible(v91,si)   <- hecho",
+          "            tiene_capacidad(p09,v91)   <- regla",
+          "                carga_kg(p09,900)   <- hecho",
+          "                capacidad_kg(v91,3000)   <- hecho",
+          "                900=<3000   <- cálculo",
+          "            tipo_compatible(p09,v91)   <- regla",
+          "                tipo_carga(p09,refrigerada)   <- hecho",
+          "                tipo_vehiculo(v91,furgon_refrigerado)   <- hecho",
+          "            puede_ingresar(p09,v91)   <- regla",
+          "                destino(p09,centro)   <- hecho",
+          "                tipo_vehiculo(v91,furgon_refrigerado)   <- hecho",
+          "                no se puede demostrar zona_restringida(centro,furgon_refrigerado)   <- negación por falla (falla: zona_restringida(centro,furgon_refrigerado))"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p09,reasignar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p09,v90)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "tipo_compatible(p09,v90)",
+            "meta": "vehiculo_apto(p09,v90)",
+            "nivel": 1,
+            "tipo": "negacion"
+          },
+          {
+            "falla": null,
+            "meta": "alternativa_apta(p09,v91)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "alternativo(p09,v91)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_apto(p09,v91)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "operativo(v91)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "disponible(v91,si)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "en_mantencion(v91,no)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "combustible(v91,suficiente)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conductor_disponible(v91,si)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tiene_capacidad(p09,v91)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "carga_kg(p09,900)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_kg(v91,3000)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "900=<3000",
+            "nivel": 4,
+            "tipo": "calculo"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_compatible(p09,v91)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_carga(p09,refrigerada)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_vehiculo(v91,furgon_refrigerado)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "puede_ingresar(p09,v91)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "destino(p09,centro)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_vehiculo(v91,furgon_refrigerado)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "zona_restringida(centro,furgon_refrigerado)",
+            "meta": "zona_restringida(centro,furgon_refrigerado)",
+            "nivel": 4,
+            "tipo": "negacion"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.7,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "inspeccionar",
+        "probabilidades": {
+          "despachar": 0.1368,
+          "reasignar": 0.1766,
+          "esperar": 0.2935,
+          "inspeccionar": 0.3297,
+          "alertar": 0.0633
+        },
+        "confianza": 0.3297,
+        "margen": 0.0362,
+        "concentracion": 0.0813,
+        "estabilidad": {
+          "coinciden": 3,
+          "total": 5,
+          "votos": {
+            "esperar": 2,
+            "inspeccionar": 3
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.4353
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3699
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.4376
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.3043
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3498
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0575,
+              "media": 0.7292,
+              "alta": 0.2134
+            },
+            "confianza": 0.7292
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9612
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.965
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9961
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P09. Carga: 900 kg. Tipo de carga: refrigerada. Destino: centro. Urgencia: media. Ruta despejada: sí.\nVehículo asignado V90. Tipo: camión. Capacidad: 8000 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículo alternativo V91. Tipo: furgón refrigerado. Capacidad: 3000 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2374.2,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "reasignar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "media",
+          "coincide": true
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.9612,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.965,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9961,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Laya eligió inspeccionar (0.33); a la esperada le dio 0.18. La respuesta de Laya depende del orden de las alternativas (3 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C10",
+      "categoria": "encadenada",
+      "descripcion": "Pedido urgente: la camioneta asignada no tiene conductor y el único alternativo tiene poco combustible.",
+      "estado": {
+        "pedido": "P10",
+        "carga_kg": 700,
+        "tipo_carga": "general",
+        "destino": "zona_sur",
+        "urgencia": "alta",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V100",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 1500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": false
+        },
+        "vehiculos_alternativos": [
+          {
+            "id": "V101",
+            "tipo_vehiculo": "furgon",
+            "capacidad_kg": 3500,
+            "disponible": true,
+            "en_mantencion": false,
+            "combustible": "bajo",
+            "conductor_disponible": true
+          }
+        ]
+      },
+      "esperada": "alertar",
+      "criterio": "Cadena: sin conductor el asignado no está operativo; con poco combustible el alternativo tampoco; por lo tanto no hay vehículo apto, y como el pedido es urgente debe intervenir el supervisor.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "alertar",
+        "candidatas": [
+          "alertar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p10,alertar)   <- regla",
+          "    urgente(p10)   <- regla",
+          "        urgencia(p10,alta)   <- hecho",
+          "    sin_vehiculo_apto(p10)   <- regla",
+          "        asignado(p10,v100)   <- hecho",
+          "        no se puede demostrar vehiculo_apto(p10,v100)   <- negación por falla (falla: operativo(v100))",
+          "        no se puede demostrar alternativa_apta(p10,A)   <- negación por falla (falla: vehiculo_apto(p10,v101))"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p10,alertar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgente(p10)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgencia(p10,alta)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "sin_vehiculo_apto(p10)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p10,v100)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "operativo(v100)",
+            "meta": "vehiculo_apto(p10,v100)",
+            "nivel": 2,
+            "tipo": "negacion"
+          },
+          {
+            "falla": "vehiculo_apto(p10,v101)",
+            "meta": "alternativa_apta(p10,A)",
+            "nivel": 2,
+            "tipo": "negacion"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.4,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1695,
+          "reasignar": 0.1262,
+          "esperar": 0.369,
+          "inspeccionar": 0.2617,
+          "alertar": 0.0736
+        },
+        "confianza": 0.369,
+        "margen": 0.1073,
+        "concentracion": 0.0849,
+        "estabilidad": {
+          "coinciden": 3,
+          "total": 5,
+          "votos": {
+            "esperar": 3,
+            "inspeccionar": 2
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.5763
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.3969
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3619
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.3908
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3484
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0515,
+              "media": 0.6939,
+              "alta": 0.2546
+            },
+            "confianza": 0.6939
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8707
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9399
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.989
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P10. Carga: 700 kg. Tipo de carga: general. Destino: zona sur. Urgencia: alta. Ruta despejada: sí.\nVehículo asignado V100. Tipo: camioneta. Capacidad: 1500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: no.\nVehículo alternativo V101. Tipo: furgón. Capacidad: 3500 kg. Disponible: sí. En mantención: no. Combustible: bajo. Conductor disponible: sí.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2480.3,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "alertar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "alta",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.8707,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.9399,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.989,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Laya eligió esperar (0.37); a la esperada le dio 0.07. La respuesta de Laya depende del orden de las alternativas (3 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C11",
+      "categoria": "encadenada",
+      "descripcion": "Pedido no urgente: la carga no cabe en el vehículo asignado y el alternativo no tiene conductor.",
+      "estado": {
+        "pedido": "P11",
+        "carga_kg": 1800,
+        "tipo_carga": "general",
+        "destino": "zona_oriente",
+        "urgencia": "baja",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V110",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 1500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": [
+          {
+            "id": "V111",
+            "tipo_vehiculo": "furgon",
+            "capacidad_kg": 3500,
+            "disponible": true,
+            "en_mantencion": false,
+            "combustible": "suficiente",
+            "conductor_disponible": false
+          }
+        ]
+      },
+      "esperada": "esperar",
+      "criterio": "Cadena: 1800 kg no caben en 1500 kg; el furgón tendría capacidad pero no tiene conductor; no hay vehículo apto y, como no es urgente, se espera a que haya uno libre.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "esperar",
+        "candidatas": [
+          "esperar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p11,esperar)   <- regla",
+          "    sin_vehiculo_apto(p11)   <- regla",
+          "        asignado(p11,v110)   <- hecho",
+          "        no se puede demostrar vehiculo_apto(p11,v110)   <- negación por falla (falla: tiene_capacidad(p11,v110))",
+          "        no se puede demostrar alternativa_apta(p11,A)   <- negación por falla (falla: vehiculo_apto(p11,v111))",
+          "    no se puede demostrar urgente(p11)   <- negación por falla (falla: urgencia(p11,alta))"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p11,esperar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "sin_vehiculo_apto(p11)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p11,v110)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "tiene_capacidad(p11,v110)",
+            "meta": "vehiculo_apto(p11,v110)",
+            "nivel": 2,
+            "tipo": "negacion"
+          },
+          {
+            "falla": "vehiculo_apto(p11,v111)",
+            "meta": "alternativa_apta(p11,A)",
+            "nivel": 2,
+            "tipo": "negacion"
+          },
+          {
+            "falla": "urgencia(p11,alta)",
+            "meta": "urgente(p11)",
+            "nivel": 1,
+            "tipo": "negacion"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 2.1,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1357,
+          "reasignar": 0.2278,
+          "esperar": 0.3077,
+          "inspeccionar": 0.2523,
+          "alertar": 0.0764
+        },
+        "confianza": 0.3077,
+        "margen": 0.0554,
+        "concentracion": 0.0589,
+        "estabilidad": {
+          "coinciden": 2,
+          "total": 5,
+          "votos": {
+            "esperar": 2,
+            "reasignar": 2,
+            "inspeccionar": 1
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.5562
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.3323
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "reasignar",
+            "confianza": 0.2913
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "reasignar",
+            "confianza": 0.4276
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.36
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.047,
+              "media": 0.6897,
+              "alta": 0.2633
+            },
+            "confianza": 0.6897
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8614
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8906
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9872
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P11. Carga: 1800 kg. Tipo de carga: general. Destino: zona oriente. Urgencia: baja. Ruta despejada: sí.\nVehículo asignado V110. Tipo: camioneta. Capacidad: 1500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículo alternativo V111. Tipo: furgón. Capacidad: 3500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: no.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2370.9,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "esperar",
+        "prolog_correcto": true,
+        "laya_correcto": true,
+        "coinciden": true
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "baja",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.8614,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.8906,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9872,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Laya acierta con confianza 0.31. La respuesta de Laya depende del orden de las alternativas (2 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C12",
+      "categoria": "encadenada",
+      "descripcion": "Camión asignado a un pedido con destino al centro; hay una camioneta alternativa lista.",
+      "estado": {
+        "pedido": "P12",
+        "carga_kg": 1100,
+        "tipo_carga": "general",
+        "destino": "centro",
+        "urgencia": "media",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V120",
+          "tipo_vehiculo": "camion",
+          "capacidad_kg": 10000,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": [
+          {
+            "id": "V121",
+            "tipo_vehiculo": "camioneta",
+            "capacidad_kg": 1500,
+            "disponible": true,
+            "en_mantencion": false,
+            "combustible": "suficiente",
+            "conductor_disponible": true
+          }
+        ]
+      },
+      "esperada": "reasignar",
+      "criterio": "Cadena: destino centro + tipo camión => zona restringida => el camión no puede entrar aunque esté operativo y tenga capacidad; la camioneta alternativa sí puede y le caben los 1100 kg.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "reasignar",
+        "candidatas": [
+          "reasignar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p12,reasignar)   <- regla",
+          "    asignado(p12,v120)   <- hecho",
+          "    no se puede demostrar vehiculo_apto(p12,v120)   <- negación por falla (falla: puede_ingresar(p12,v120))",
+          "    alternativa_apta(p12,v121)   <- regla",
+          "        alternativo(p12,v121)   <- hecho",
+          "        vehiculo_apto(p12,v121)   <- regla",
+          "            operativo(v121)   <- regla",
+          "                disponible(v121,si)   <- hecho",
+          "                en_mantencion(v121,no)   <- hecho",
+          "                combustible(v121,suficiente)   <- hecho",
+          "                conductor_disponible(v121,si)   <- hecho",
+          "            tiene_capacidad(p12,v121)   <- regla",
+          "                carga_kg(p12,1100)   <- hecho",
+          "                capacidad_kg(v121,1500)   <- hecho",
+          "                1100=<1500   <- cálculo",
+          "            tipo_compatible(p12,v121)   <- regla",
+          "                tipo_carga(p12,general)   <- hecho",
+          "                vehiculo(v121)   <- hecho",
+          "            puede_ingresar(p12,v121)   <- regla",
+          "                destino(p12,centro)   <- hecho",
+          "                tipo_vehiculo(v121,camioneta)   <- hecho",
+          "                no se puede demostrar zona_restringida(centro,camioneta)   <- negación por falla (falla: zona_restringida(centro,camioneta))"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p12,reasignar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p12,v120)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "puede_ingresar(p12,v120)",
+            "meta": "vehiculo_apto(p12,v120)",
+            "nivel": 1,
+            "tipo": "negacion"
+          },
+          {
+            "falla": null,
+            "meta": "alternativa_apta(p12,v121)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "alternativo(p12,v121)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_apto(p12,v121)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "operativo(v121)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "disponible(v121,si)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "en_mantencion(v121,no)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "combustible(v121,suficiente)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conductor_disponible(v121,si)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tiene_capacidad(p12,v121)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "carga_kg(p12,1100)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_kg(v121,1500)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "1100=<1500",
+            "nivel": 4,
+            "tipo": "calculo"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_compatible(p12,v121)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_carga(p12,general)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo(v121)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "puede_ingresar(p12,v121)",
+            "nivel": 3,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "destino(p12,centro)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_vehiculo(v121,camioneta)",
+            "nivel": 4,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "zona_restringida(centro,camioneta)",
+            "meta": "zona_restringida(centro,camioneta)",
+            "nivel": 4,
+            "tipo": "negacion"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 2.2,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1263,
+          "reasignar": 0.1795,
+          "esperar": 0.3855,
+          "inspeccionar": 0.2376,
+          "alertar": 0.071
+        },
+        "confianza": 0.3855,
+        "margen": 0.1479,
+        "concentracion": 0.0888,
+        "estabilidad": {
+          "coinciden": 3,
+          "total": 5,
+          "votos": {
+            "esperar": 3,
+            "inspeccionar": 1,
+            "reasignar": 1
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.595
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.4242
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3529
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "reasignar",
+            "confianza": 0.4352
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.3654
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0417,
+              "media": 0.7751,
+              "alta": 0.1831
+            },
+            "confianza": 0.7751
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.5684
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.7257
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9838
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P12. Carga: 1100 kg. Tipo de carga: general. Destino: centro. Urgencia: media. Ruta despejada: sí.\nVehículo asignado V120. Tipo: camión. Capacidad: 10000 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículo alternativo V121. Tipo: camioneta. Capacidad: 1500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2314.5,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "reasignar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "media",
+          "coincide": true
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.5684,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.7257,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9838,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Laya eligió esperar (0.39); a la esperada le dio 0.18. La respuesta de Laya depende del orden de las alternativas (3 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C13",
+      "categoria": "incompleta",
+      "descripcion": "No se registró la urgencia del pedido; todo lo demás está listo.",
+      "estado": {
+        "pedido": "P13",
+        "carga_kg": 600,
+        "tipo_carga": "general",
+        "destino": "zona_norte",
+        "urgencia": null,
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V130",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": []
+      },
+      "esperada": "inspeccionar",
+      "criterio": "Sin urgencia no se sabe si conviene salir ya o esperar a consolidar carga (el furgón iría al 17 %). Elegir despachar o esperar sería inventar el dato.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "inspeccionar",
+        "candidatas": [
+          "inspeccionar",
+          "esperar"
+        ],
+        "contradicciones": [],
+        "faltantes": [
+          "dato(p13,urgencia)"
+        ],
+        "asignado_apto": true,
+        "justificacion": [
+          "accion_candidata(p13,inspeccionar)   <- regla",
+          "    falta_dato_critico(p13,dato(p13,urgencia))   <- regla",
+          "        pedido(p13)   <- hecho",
+          "        desconocido(p13,urgencia)   <- hecho",
+          "        urgencia\\==vehiculos_alternativos   <- cálculo"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p13,inspeccionar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "falta_dato_critico(p13,dato(p13,urgencia))",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "pedido(p13)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "desconocido(p13,urgencia)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "urgencia\\==vehiculos_alternativos",
+            "nivel": 2,
+            "tipo": "calculo"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.4,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.2286,
+          "reasignar": 0.0607,
+          "esperar": 0.4843,
+          "inspeccionar": 0.1239,
+          "alertar": 0.1025
+        },
+        "confianza": 0.4843,
+        "margen": 0.2558,
+        "concentracion": 0.1607,
+        "estabilidad": {
+          "coinciden": 5,
+          "total": 5,
+          "votos": {
+            "esperar": 5
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.4908
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.4526
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "esperar",
+            "confianza": 0.3558
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.4957
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.6267
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0532,
+              "media": 0.6934,
+              "alta": 0.2534
+            },
+            "confianza": 0.6934
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.5013
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9067
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9948
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P13. Carga: 600 kg. Tipo de carga: general. Destino: zona norte. Urgencia: sin dato. Ruta despejada: sí.\nVehículo asignado V130. Tipo: furgón. Capacidad: 3500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: ninguno.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2044.8,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "inspeccionar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": null,
+          "coincide": null
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.5013,
+          "prolog": true,
+          "coincide": true
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.9067,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9948,
+          "prolog": true,
+          "coincide": true
+        }
+      },
+      "observacion": "Falta dato crítico: dato(p13,urgencia). Varias acciones demostrables (inspeccionar, esperar); Prolog elige por prioridad. Laya eligió esperar (0.48); a la esperada le dio 0.12."
+    },
+    {
+      "id": "C14",
+      "categoria": "incompleta",
+      "descripcion": "Falta la capacidad del vehículo asignado.",
+      "estado": {
+        "pedido": "P14",
+        "carga_kg": 1200,
+        "tipo_carga": "general",
+        "destino": "zona_poniente",
+        "urgencia": "alta",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V140",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": null,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": []
+      },
+      "esperada": "inspeccionar",
+      "criterio": "No se puede saber si 1200 kg caben en la camioneta. Aunque el pedido es urgente, alertar o despachar supondría un dato que no existe.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "inspeccionar",
+        "candidatas": [
+          "inspeccionar",
+          "alertar"
+        ],
+        "contradicciones": [],
+        "faltantes": [
+          "dato(v140,capacidad_kg)"
+        ],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p14,inspeccionar)   <- regla",
+          "    falta_dato_critico(p14,dato(v140,capacidad_kg))   <- regla",
+          "        vehiculo_relevante(p14,v140)   <- regla",
+          "            asignado(p14,v140)   <- hecho",
+          "        desconocido(v140,capacidad_kg)   <- hecho"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p14,inspeccionar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "falta_dato_critico(p14,dato(v140,capacidad_kg))",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_relevante(p14,v140)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p14,v140)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "desconocido(v140,capacidad_kg)",
+            "nivel": 2,
+            "tipo": "hecho"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 2.1,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1996,
+          "reasignar": 0.033,
+          "esperar": 0.5136,
+          "inspeccionar": 0.1259,
+          "alertar": 0.1279
+        },
+        "confianza": 0.5136,
+        "margen": 0.3139,
+        "concentracion": 0.192,
+        "estabilidad": {
+          "coinciden": 5,
+          "total": 5,
+          "votos": {
+            "esperar": 5
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.6778
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.4132
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "esperar",
+            "confianza": 0.3407
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.5197
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.6164
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0478,
+              "media": 0.7351,
+              "alta": 0.2171
+            },
+            "confianza": 0.7351
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.6106
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.965
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9969
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P14. Carga: 1200 kg. Tipo de carga: general. Destino: zona poniente. Urgencia: alta. Ruta despejada: sí.\nVehículo asignado V140. Tipo: camioneta. Capacidad: sin dato. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: ninguno.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2159.4,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "inspeccionar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "alta",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.6106,
+          "prolog": true,
+          "coincide": true
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.965,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9969,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Falta dato crítico: dato(v140,capacidad_kg). Varias acciones demostrables (inspeccionar, alertar); Prolog elige por prioridad. Laya eligió esperar (0.51); a la esperada le dio 0.13."
+    },
+    {
+      "id": "C15",
+      "categoria": "incompleta",
+      "descripcion": "No se sabe si hay vehículos alternativos, pero el asignado está listo y el pedido es urgente.",
+      "estado": {
+        "pedido": "P15",
+        "carga_kg": 800,
+        "tipo_carga": "general",
+        "destino": "zona_sur",
+        "urgencia": "alta",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V150",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 1500,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": null
+      },
+      "esperada": "despachar",
+      "criterio": "Falta un dato, pero no importa: los alternativos solo se necesitan si el asignado no sirve, y el asignado sirve. Inspeccionar aquí sería demorar un pedido urgente sin motivo.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "despachar",
+        "candidatas": [
+          "despachar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": true,
+        "justificacion": [
+          "accion_candidata(p15,despachar)   <- regla",
+          "    asignado(p15,v150)   <- hecho",
+          "    vehiculo_apto(p15,v150)   <- regla",
+          "        operativo(v150)   <- regla",
+          "            disponible(v150,si)   <- hecho",
+          "            en_mantencion(v150,no)   <- hecho",
+          "            combustible(v150,suficiente)   <- hecho",
+          "            conductor_disponible(v150,si)   <- hecho",
+          "        tiene_capacidad(p15,v150)   <- regla",
+          "            carga_kg(p15,800)   <- hecho",
+          "            capacidad_kg(v150,1500)   <- hecho",
+          "            800=<1500   <- cálculo",
+          "        tipo_compatible(p15,v150)   <- regla",
+          "            tipo_carga(p15,general)   <- hecho",
+          "            vehiculo(v150)   <- hecho",
+          "        puede_ingresar(p15,v150)   <- regla",
+          "            destino(p15,zona_sur)   <- hecho",
+          "            tipo_vehiculo(v150,camioneta)   <- hecho",
+          "            no se puede demostrar zona_restringida(zona_sur,camioneta)   <- negación por falla (falla: zona_restringida(zona_sur,camioneta))",
+          "    ruta_despejada(p15,si)   <- hecho",
+          "    conviene_salir(p15,v150)   <- regla",
+          "        urgencia(p15,alta)   <- hecho"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p15,despachar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p15,v150)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_apto(p15,v150)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "operativo(v150)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "disponible(v150,si)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "en_mantencion(v150,no)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "combustible(v150,suficiente)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conductor_disponible(v150,si)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tiene_capacidad(p15,v150)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "carga_kg(p15,800)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_kg(v150,1500)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "800=<1500",
+            "nivel": 3,
+            "tipo": "calculo"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_compatible(p15,v150)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_carga(p15,general)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo(v150)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "puede_ingresar(p15,v150)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "destino(p15,zona_sur)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_vehiculo(v150,camioneta)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "zona_restringida(zona_sur,camioneta)",
+            "meta": "zona_restringida(zona_sur,camioneta)",
+            "nivel": 3,
+            "tipo": "negacion"
+          },
+          {
+            "falla": null,
+            "meta": "ruta_despejada(p15,si)",
+            "nivel": 1,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "conviene_salir(p15,v150)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgencia(p15,alta)",
+            "nivel": 2,
+            "tipo": "hecho"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.5,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "inspeccionar",
+        "probabilidades": {
+          "despachar": 0.1113,
+          "reasignar": 0.0496,
+          "esperar": 0.193,
+          "inspeccionar": 0.56,
+          "alertar": 0.0861
+        },
+        "confianza": 0.56,
+        "margen": 0.367,
+        "concentracion": 0.2254,
+        "estabilidad": {
+          "coinciden": 5,
+          "total": 5,
+          "votos": {
+            "inspeccionar": 5
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.5772
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.6708
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.7578
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3182
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.4759
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0698,
+              "media": 0.7212,
+              "alta": 0.209
+            },
+            "confianza": 0.7212
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8006
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9457
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9875
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P15. Carga: 800 kg. Tipo de carga: general. Destino: zona sur. Urgencia: alta. Ruta despejada: sí.\nVehículo asignado V150. Tipo: camioneta. Capacidad: 1500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: sin dato.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2078.6,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "despachar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "alta",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.8006,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.9457,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9875,
+          "prolog": true,
+          "coincide": true
+        }
+      },
+      "observacion": "Laya eligió inspeccionar (0.56); a la esperada le dio 0.11."
+    },
+    {
+      "id": "C16",
+      "categoria": "incompleta",
+      "descripcion": "El vehículo asignado está en el taller y del alternativo no se sabe el combustible.",
+      "estado": {
+        "pedido": "P16",
+        "carga_kg": 500,
+        "tipo_carga": "general",
+        "destino": "zona_oriente",
+        "urgencia": "media",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V160",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": false,
+          "en_mantencion": true,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": [
+          {
+            "id": "V161",
+            "tipo_vehiculo": "camioneta",
+            "capacidad_kg": 1500,
+            "disponible": true,
+            "en_mantencion": false,
+            "combustible": null,
+            "conductor_disponible": true
+          }
+        ]
+      },
+      "esperada": "inspeccionar",
+      "criterio": "El asignado no sirve, así que el alternativo pasa a ser necesario, pero falta su combustible: no se puede saber si reasignar es posible.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "inspeccionar",
+        "candidatas": [
+          "inspeccionar",
+          "esperar"
+        ],
+        "contradicciones": [],
+        "faltantes": [
+          "dato(v161,combustible)"
+        ],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p16,inspeccionar)   <- regla",
+          "    falta_dato_critico(p16,dato(v161,combustible))   <- regla",
+          "        vehiculo_relevante(p16,v161)   <- regla",
+          "            asignado(p16,v160)   <- hecho",
+          "            no se puede demostrar vehiculo_apto(p16,v160)   <- negación por falla (falla: operativo(v160))",
+          "            alternativo(p16,v161)   <- hecho",
+          "        desconocido(v161,combustible)   <- hecho"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p16,inspeccionar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "falta_dato_critico(p16,dato(v161,combustible))",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_relevante(p16,v161)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p16,v160)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": "operativo(v160)",
+            "meta": "vehiculo_apto(p16,v160)",
+            "nivel": 3,
+            "tipo": "negacion"
+          },
+          {
+            "falla": null,
+            "meta": "alternativo(p16,v161)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "desconocido(v161,combustible)",
+            "nivel": 2,
+            "tipo": "hecho"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.3,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1407,
+          "reasignar": 0.1272,
+          "esperar": 0.3501,
+          "inspeccionar": 0.3057,
+          "alertar": 0.0764
+        },
+        "confianza": 0.3501,
+        "margen": 0.0444,
+        "concentracion": 0.0901,
+        "estabilidad": {
+          "coinciden": 3,
+          "total": 5,
+          "votos": {
+            "esperar": 3,
+            "inspeccionar": 1,
+            "reasignar": 1
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.5323
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.4166
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.4141
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.3593
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "reasignar",
+            "confianza": 0.3139
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0431,
+              "media": 0.7492,
+              "alta": 0.2077
+            },
+            "confianza": 0.7492
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.6151
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9773
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9937
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P16. Carga: 500 kg. Tipo de carga: general. Destino: zona oriente. Urgencia: media. Ruta despejada: sí.\nVehículo asignado V160. Tipo: furgón. Capacidad: 3500 kg. Disponible: no. En mantención: sí. Combustible: suficiente. Conductor disponible: sí.\nVehículo alternativo V161. Tipo: camioneta. Capacidad: 1500 kg. Disponible: sí. En mantención: no. Combustible: sin dato. Conductor disponible: sí.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2357.1,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "inspeccionar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "media",
+          "coincide": true
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.6151,
+          "prolog": true,
+          "coincide": true
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.9773,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9937,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Falta dato crítico: dato(v161,combustible). Varias acciones demostrables (inspeccionar, esperar); Prolog elige por prioridad. Laya eligió esperar (0.35); a la esperada le dio 0.31. La respuesta de Laya depende del orden de las alternativas (3 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C17",
+      "categoria": "contradiccion",
+      "descripcion": "Ambigüedad: pedido urgente con la ruta cortada; el asignado está en el taller y hay un alternativo listo.",
+      "estado": {
+        "pedido": "P17",
+        "carga_kg": 500,
+        "tipo_carga": "general",
+        "destino": "zona_sur",
+        "urgencia": "alta",
+        "ruta_despejada": false,
+        "vehiculo_asignado": {
+          "id": "V170",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": false,
+          "en_mantencion": true,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": [
+          {
+            "id": "V171",
+            "tipo_vehiculo": "camioneta",
+            "capacidad_kg": 1500,
+            "disponible": true,
+            "en_mantencion": false,
+            "combustible": "suficiente",
+            "conductor_disponible": true
+          }
+        ]
+      },
+      "esperada": "alertar",
+      "criterio": "Dos acciones se pueden justificar a la vez: reasignar (el alternativo sirve) y alertar (urgente con la ruta cortada). Reasignar no resuelve el problema, porque ningún vehículo puede pasar por la ruta cortada; con un pedido urgente decide el supervisor. La política de prioridad del grupo pone alertar antes que reasignar.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "alertar",
+        "candidatas": [
+          "alertar",
+          "reasignar"
+        ],
+        "contradicciones": [],
+        "faltantes": [],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p17,alertar)   <- regla",
+          "    urgente(p17)   <- regla",
+          "        urgencia(p17,alta)   <- hecho",
+          "    ruta_despejada(p17,no)   <- hecho"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p17,alertar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgente(p17)",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "urgencia(p17,alta)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "ruta_despejada(p17,no)",
+            "nivel": 1,
+            "tipo": "hecho"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.3,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1372,
+          "reasignar": 0.1337,
+          "esperar": 0.4154,
+          "inspeccionar": 0.2542,
+          "alertar": 0.0596
+        },
+        "confianza": 0.4154,
+        "margen": 0.1612,
+        "concentracion": 0.1161,
+        "estabilidad": {
+          "coinciden": 3,
+          "total": 5,
+          "votos": {
+            "esperar": 3,
+            "inspeccionar": 2
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.6241
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.4823
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3465
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.4286
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3298
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0388,
+              "media": 0.7305,
+              "alta": 0.2306
+            },
+            "confianza": 0.7305
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.7948
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8844
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9921
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P17. Carga: 500 kg. Tipo de carga: general. Destino: zona sur. Urgencia: alta. Ruta despejada: no.\nVehículo asignado V170. Tipo: furgón. Capacidad: 3500 kg. Disponible: no. En mantención: sí. Combustible: suficiente. Conductor disponible: sí.\nVehículo alternativo V171. Tipo: camioneta. Capacidad: 1500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2328.5,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "alertar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "alta",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.7948,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.8844,
+          "prolog": false,
+          "coincide": false
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9921,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Varias acciones demostrables (alertar, reasignar); Prolog elige por prioridad. Laya eligió esperar (0.42); a la esperada le dio 0.06. La respuesta de Laya depende del orden de las alternativas (3 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C18",
+      "categoria": "contradiccion",
+      "descripcion": "Contradicción: el sistema de flota dice que el vehículo está disponible y el taller dice que está en mantención.",
+      "estado": {
+        "pedido": "P18",
+        "carga_kg": 1500,
+        "tipo_carga": "general",
+        "destino": "zona_norte",
+        "urgencia": "media",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V18",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 1500,
+          "disponible": true,
+          "en_mantencion": true,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": []
+      },
+      "esperada": "inspeccionar",
+      "criterio": "Los dos datos no pueden ser verdad al mismo tiempo. Despachar con un vehículo que podría estar en el taller es un riesgo; hay que revisar los datos antes de actuar.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "inspeccionar",
+        "candidatas": [
+          "inspeccionar",
+          "esperar"
+        ],
+        "contradicciones": [
+          "disponible_y_en_mantencion(v18)"
+        ],
+        "faltantes": [],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p18,inspeccionar)   <- regla",
+          "    contradiccion(p18,disponible_y_en_mantencion(v18))   <- regla",
+          "        vehiculo_relevante(p18,v18)   <- regla",
+          "            asignado(p18,v18)   <- hecho",
+          "        disponible(v18,si)   <- hecho",
+          "        en_mantencion(v18,si)   <- hecho"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p18,inspeccionar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "contradiccion(p18,disponible_y_en_mantencion(v18))",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_relevante(p18,v18)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p18,v18)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "disponible(v18,si)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "en_mantencion(v18,si)",
+            "nivel": 2,
+            "tipo": "hecho"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.7,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1817,
+          "reasignar": 0.061,
+          "esperar": 0.4575,
+          "inspeccionar": 0.2013,
+          "alertar": 0.0985
+        },
+        "confianza": 0.4575,
+        "margen": 0.2563,
+        "concentracion": 0.1369,
+        "estabilidad": {
+          "coinciden": 5,
+          "total": 5,
+          "votos": {
+            "esperar": 5
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.4002
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.3998
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "esperar",
+            "confianza": 0.3058
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.5032
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.6787
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0478,
+              "media": 0.7117,
+              "alta": 0.2406
+            },
+            "confianza": 0.7117
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.7992
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8517
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9935
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P18. Carga: 1500 kg. Tipo de carga: general. Destino: zona norte. Urgencia: media. Ruta despejada: sí.\nVehículo asignado V18. Tipo: camioneta. Capacidad: 1500 kg. Disponible: sí. En mantención: sí. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: ninguno.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2109.0,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "inspeccionar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "media",
+          "coincide": true
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.7992,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.8517,
+          "prolog": true,
+          "coincide": true
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9935,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Contradicción: disponible_y_en_mantencion(v18). Varias acciones demostrables (inspeccionar, esperar); Prolog elige por prioridad. Laya eligió esperar (0.46); a la esperada le dio 0.20."
+    },
+    {
+      "id": "C19",
+      "categoria": "contradiccion",
+      "descripcion": "Contradicción con varias acciones posibles: el asignado figura disponible y en mantención, y hay un alternativo listo.",
+      "estado": {
+        "pedido": "P19",
+        "carga_kg": 600,
+        "tipo_carga": "general",
+        "destino": "zona_poniente",
+        "urgencia": "media",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V190",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 3500,
+          "disponible": true,
+          "en_mantencion": true,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": [
+          {
+            "id": "V191",
+            "tipo_vehiculo": "camioneta",
+            "capacidad_kg": 1500,
+            "disponible": true,
+            "en_mantencion": false,
+            "combustible": "suficiente",
+            "conductor_disponible": true
+          }
+        ]
+      },
+      "esperada": "inspeccionar",
+      "criterio": "Se podría reasignar al alternativo, pero el registro del asignado es contradictorio y la central no sabe cuál de los dos sistemas se equivoca. Primero se revisan los datos (política: la calidad de los datos va antes que la operación).",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "inspeccionar",
+        "candidatas": [
+          "inspeccionar",
+          "reasignar"
+        ],
+        "contradicciones": [
+          "disponible_y_en_mantencion(v190)"
+        ],
+        "faltantes": [],
+        "asignado_apto": false,
+        "justificacion": [
+          "accion_candidata(p19,inspeccionar)   <- regla",
+          "    contradiccion(p19,disponible_y_en_mantencion(v190))   <- regla",
+          "        vehiculo_relevante(p19,v190)   <- regla",
+          "            asignado(p19,v190)   <- hecho",
+          "        disponible(v190,si)   <- hecho",
+          "        en_mantencion(v190,si)   <- hecho"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p19,inspeccionar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "contradiccion(p19,disponible_y_en_mantencion(v190))",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_relevante(p19,v190)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p19,v190)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "disponible(v190,si)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "en_mantencion(v190,si)",
+            "nivel": 2,
+            "tipo": "hecho"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.8,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1548,
+          "reasignar": 0.1279,
+          "esperar": 0.3942,
+          "inspeccionar": 0.2646,
+          "alertar": 0.0584
+        },
+        "confianza": 0.3942,
+        "margen": 0.1296,
+        "concentracion": 0.1074,
+        "estabilidad": {
+          "coinciden": 3,
+          "total": 5,
+          "votos": {
+            "esperar": 3,
+            "inspeccionar": 2
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.5774
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.4293
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3422
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.4278
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3307
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0566,
+              "media": 0.7016,
+              "alta": 0.2418
+            },
+            "confianza": 0.7016
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.6873
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9113
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9951
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P19. Carga: 600 kg. Tipo de carga: general. Destino: zona poniente. Urgencia: media. Ruta despejada: sí.\nVehículo asignado V190. Tipo: furgón. Capacidad: 3500 kg. Disponible: sí. En mantención: sí. Combustible: suficiente. Conductor disponible: sí.\nVehículo alternativo V191. Tipo: camioneta. Capacidad: 1500 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2445.3,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "inspeccionar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "media",
+          "coincide": true
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.6873,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.9113,
+          "prolog": true,
+          "coincide": true
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9951,
+          "prolog": false,
+          "coincide": false
+        }
+      },
+      "observacion": "Contradicción: disponible_y_en_mantencion(v190). Varias acciones demostrables (inspeccionar, reasignar); Prolog elige por prioridad. Laya eligió esperar (0.39); a la esperada le dio 0.26. La respuesta de Laya depende del orden de las alternativas (3 de 5 órdenes eligen lo mismo)."
+    },
+    {
+      "id": "C20",
+      "categoria": "contradiccion",
+      "descripcion": "Contradicción: la capacidad declarada (9000 kg) es imposible para una camioneta.",
+      "estado": {
+        "pedido": "P20",
+        "carga_kg": 200,
+        "tipo_carga": "general",
+        "destino": "zona_poniente",
+        "urgencia": "alta",
+        "ruta_despejada": true,
+        "vehiculo_asignado": {
+          "id": "V20",
+          "tipo_vehiculo": "camioneta",
+          "capacidad_kg": 9000,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        "vehiculos_alternativos": []
+      },
+      "esperada": "inspeccionar",
+      "criterio": "Una camioneta carga como máximo 1500 kg (supuesto S7 del grupo). Si el registro dice 9000 kg, hay un error en los datos y no se puede confiar en que la carga quepa.",
+      "prolog": {
+        "agente": "prolog",
+        "accion": "inspeccionar",
+        "candidatas": [
+          "inspeccionar",
+          "despachar"
+        ],
+        "contradicciones": [
+          "capacidad_imposible(v20)"
+        ],
+        "faltantes": [],
+        "asignado_apto": true,
+        "justificacion": [
+          "accion_candidata(p20,inspeccionar)   <- regla",
+          "    contradiccion(p20,capacidad_imposible(v20))   <- regla",
+          "        vehiculo_relevante(p20,v20)   <- regla",
+          "            asignado(p20,v20)   <- hecho",
+          "        tipo_vehiculo(v20,camioneta)   <- hecho",
+          "        capacidad_kg(v20,9000)   <- hecho",
+          "        capacidad_maxima(camioneta,1500)   <- hecho",
+          "        9000>1500   <- cálculo"
+        ],
+        "pasos": [
+          {
+            "falla": null,
+            "meta": "accion_candidata(p20,inspeccionar)",
+            "nivel": 0,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "contradiccion(p20,capacidad_imposible(v20))",
+            "nivel": 1,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "vehiculo_relevante(p20,v20)",
+            "nivel": 2,
+            "tipo": "regla"
+          },
+          {
+            "falla": null,
+            "meta": "asignado(p20,v20)",
+            "nivel": 3,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "tipo_vehiculo(v20,camioneta)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_kg(v20,9000)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "capacidad_maxima(camioneta,1500)",
+            "nivel": 2,
+            "tipo": "hecho"
+          },
+          {
+            "falla": null,
+            "meta": "9000>1500",
+            "nivel": 2,
+            "tipo": "calculo"
+          }
+        ],
+        "avisos": [],
+        "tiempo_ms": 1.8,
+        "error": null
+      },
+      "laya": {
+        "agente": "laya",
+        "accion": "esperar",
+        "probabilidades": {
+          "despachar": 0.1833,
+          "reasignar": 0.0484,
+          "esperar": 0.4417,
+          "inspeccionar": 0.2346,
+          "alertar": 0.092
+        },
+        "confianza": 0.4417,
+        "margen": 0.2071,
+        "concentracion": 0.1437,
+        "estabilidad": {
+          "coinciden": 4,
+          "total": 5,
+          "votos": {
+            "esperar": 4,
+            "inspeccionar": 1
+          }
+        },
+        "por_orden": [
+          {
+            "primera": "despachar",
+            "eleccion": "esperar",
+            "confianza": 0.4675
+          },
+          {
+            "primera": "reasignar",
+            "eleccion": "esperar",
+            "confianza": 0.3894
+          },
+          {
+            "primera": "esperar",
+            "eleccion": "inspeccionar",
+            "confianza": 0.3199
+          },
+          {
+            "primera": "inspeccionar",
+            "eleccion": "esperar",
+            "confianza": 0.4586
+          },
+          {
+            "primera": "alertar",
+            "eleccion": "esperar",
+            "confianza": 0.5914
+          }
+        ],
+        "diagnostico": {
+          "urgencia": {
+            "tipo": "score",
+            "valor": "media",
+            "probabilidades": {
+              "baja": 0.0476,
+              "media": 0.7103,
+              "alta": 0.2422
+            },
+            "confianza": 0.7103
+          },
+          "falta_dato": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8009
+          },
+          "contradiccion": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.8755
+          },
+          "asignado_sirve": {
+            "tipo": "noul",
+            "valor": true,
+            "p_si": 0.9932
+          }
+        },
+        "modelo": "laya multilingual (sin entrenar)",
+        "version_laya": "0.5.0",
+        "texto_enviado": "Pedido P20. Carga: 200 kg. Tipo de carga: general. Destino: zona poniente. Urgencia: alta. Ruta despejada: sí.\nVehículo asignado V20. Tipo: camioneta. Capacidad: 9000 kg. Disponible: sí. En mantención: no. Combustible: suficiente. Conductor disponible: sí.\nVehículos alternativos: ninguno.",
+        "pregunta": {
+          "type": "choice",
+          "instructions": "¿Qué acción debe ejecutar primero la central de despacho con este pedido?",
+          "criteria": {
+            "despachar": "el vehículo asignado sirve (disponible, fuera del taller, con combustible, con conductor, con capacidad para la carga, compatible con el tipo de carga y con permiso para entrar al destino), la ruta está despejada y conviene salir ya",
+            "reasignar": "el vehículo asignado no sirve para este pedido, pero uno de los vehículos alternativos sí sirve",
+            "esperar": "el pedido no es urgente y todavía no puede o no conviene salir: la ruta está cortada, ningún vehículo sirve o el vehículo iría casi vacío",
+            "inspeccionar": "falta un dato necesario (sin dato) o los datos se contradicen, por ejemplo disponible y en mantención a la vez, o una capacidad imposible",
+            "alertar": "el pedido es urgente y no puede salir: ningún vehículo sirve o la ruta está cortada"
+          }
+        },
+        "tiempo_ms": 2016.9,
+        "error": null
+      },
+      "comparacion": {
+        "esperada": "inspeccionar",
+        "prolog_correcto": true,
+        "laya_correcto": false,
+        "coinciden": false
+      },
+      "diagnostico": {
+        "urgencia": {
+          "instruccion": "¿Qué urgencia tiene el pedido?",
+          "tipo": "score",
+          "nivel": "información directa",
+          "prolog_predicado": "urgencia/2 (hecho del estado)",
+          "laya": "media",
+          "laya_p_si": null,
+          "prolog": "alta",
+          "coincide": false
+        },
+        "falta_dato": {
+          "instruccion": "¿Falta algún dato necesario para decidir (aparece sin dato)?",
+          "tipo": "noul",
+          "nivel": "información incompleta",
+          "prolog_predicado": "falta_dato_critico/2",
+          "laya": true,
+          "laya_p_si": 0.8009,
+          "prolog": false,
+          "coincide": false
+        },
+        "contradiccion": {
+          "instruccion": "¿Hay datos que se contradicen, como un vehículo disponible y en mantención a la vez o una capacidad imposible para su tipo?",
+          "tipo": "noul",
+          "nivel": "contradicción",
+          "prolog_predicado": "contradiccion/2",
+          "laya": true,
+          "laya_p_si": 0.8755,
+          "prolog": true,
+          "coincide": true
+        },
+        "asignado_sirve": {
+          "instruccion": "¿El vehículo asignado puede llevar este pedido (disponible, fuera del taller, con combustible, con conductor, con capacidad suficiente y compatible con la carga y el destino)?",
+          "tipo": "noul",
+          "nivel": "inferencia encadenada",
+          "prolog_predicado": "vehiculo_apto/2 con el vehículo asignado",
+          "laya": true,
+          "laya_p_si": 0.9932,
+          "prolog": true,
+          "coincide": true
+        }
+      },
+      "observacion": "Contradicción: capacidad_imposible(v20). Varias acciones demostrables (inspeccionar, despachar); Prolog elige por prioridad. Laya eligió esperar (0.44); a la esperada le dio 0.23. La respuesta de Laya depende del orden de las alternativas (4 de 5 órdenes eligen lo mismo)."
+    }
+  ]
+}

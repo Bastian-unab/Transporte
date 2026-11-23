@@ -1,1 +1,1 @@
-"""Agente Laya, puente a Prolog y utilidades de casos (Persona 2)."""
+"""Agentes del proyecto: Prolog (reglas) y Laya (decisión tipada), más utilidades comunes."""

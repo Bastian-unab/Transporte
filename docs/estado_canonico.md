@@ -97,7 +97,7 @@ Es mecánica y no agrega conclusiones:
 ```prolog
 ?- [prolog/reglas, prolog/estado_json].
 ?- cargar_estado('mi_estado.json', P), explicar(P).
-?- cargar_caso('casos/casos_directa_paso1.json', 'C05', P, Esperada).
+?- cargar_caso('casos/casos.json', 'C05', P, Esperada).
 ```
 
 ## Cambios respecto del ejemplo del documento de reparto
@@ -121,7 +121,7 @@ la salida de Prolog desde Python:
 
 ```bash
 swipl prolog/ejecutar.pl estado.json
-swipl prolog/ejecutar.pl casos/casos_directa_paso1.json C05
+swipl prolog/ejecutar.pl casos/casos.json C05
 ```
 
 Ambos imprimen una línea JSON con `pedido`, `accion`, `candidatas`, `contradicciones`,

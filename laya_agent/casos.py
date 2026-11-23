@@ -1,29 +1,31 @@
-"""Lectura de los casos de prueba (formato acordado con Persona 3).
+"""Lectura de los 20 casos de evaluación (casos/casos.json).
 
-Cada archivo de casos/ es una lista de objetos con:
-  id, categoria, descripcion, estado, decision_esperada, criterio_esperada
+Cada caso tiene: id, categoria, descripcion, estado, decision_esperada, criterio_esperada.
+Los agentes reciben SOLO `estado`; la decisión esperada se usa únicamente para comparar.
 """
 
 import json
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-CARPETA_CASOS = RAIZ / "casos"
+ARCHIVO_CASOS = RAIZ / "casos" / "casos.json"
+
+CATEGORIAS = {
+    "directa": "Información directa",
+    "un_paso": "Inferencia de un paso",
+    "encadenada": "Inferencia encadenada",
+    "incompleta": "Información incompleta",
+    "contradiccion": "Contradicción o ambigüedad",
+}
 
 
-def cargar_casos(carpeta: Path = CARPETA_CASOS) -> list[dict]:
-    """Todos los casos de casos/*.json, ordenados por id."""
-    casos = []
-    for archivo in sorted(Path(carpeta).glob("*.json")):
-        with open(archivo, encoding="utf-8") as f:
-            for caso in json.load(f):
-                caso["archivo"] = archivo.name
-                casos.append(caso)
-    return sorted(casos, key=lambda c: c["id"])
+def cargar_casos(archivo: Path = ARCHIVO_CASOS) -> list[dict]:
+    with open(archivo, encoding="utf-8") as f:
+        return json.load(f)
 
 
-def buscar_caso(id_caso: str, carpeta: Path = CARPETA_CASOS) -> dict:
-    for caso in cargar_casos(carpeta):
+def buscar_caso(id_caso: str, archivo: Path = ARCHIVO_CASOS) -> dict:
+    for caso in cargar_casos(archivo):
         if caso["id"].upper() == id_caso.upper():
             return caso
-    raise KeyError(f"No existe el caso {id_caso} en {carpeta}")
+    raise KeyError(f"No existe el caso {id_caso} en {archivo.name}")

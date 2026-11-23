@@ -1,5 +1,5 @@
 :- encoding(utf8).
-/*  consultas.pl  ·  Consultas comentadas sobre la base de conocimiento (Persona 1)
+/*  consultas.pl  ·  Consultas comentadas sobre la base de conocimiento
     ------------------------------------------------------------------
     Ejecutar todas, desde la carpeta raíz del repositorio:
         swipl prolog/consultas.pl

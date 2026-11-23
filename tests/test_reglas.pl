@@ -1,5 +1,5 @@
 :- encoding(utf8).
-/*  test_reglas.pl  ·  Pruebas automáticas de la base Prolog (Persona 1)
+/*  test_reglas.pl  ·  Pruebas automáticas de la base Prolog
     ------------------------------------------------------------------
     Ejecutar desde la carpeta raíz del repositorio:
         swipl -g run_tests -t halt tests/test_reglas.pl
@@ -50,7 +50,7 @@ test(justificacion_empieza_por_la_accion, Primero == accion_candidata(p05, reasi
 
 caso_c01_sin(Campo, P) :-
     raiz_proyecto(R),
-    atom_concat(R, '/casos/casos_directa_paso1.json', Archivo),
+    atom_concat(R, '/casos/casos.json', Archivo),
     leer_json(Archivo, [Caso|_]),
     put_dict(Campo, Caso.estado, null, Estado),
     limpiar_estado,
@@ -66,20 +66,20 @@ test(alternativos_desconocidos_no_importan_si_el_asignado_sirve) :-
 
 :- end_tests(datos_faltantes).
 
-/* ---- Los 8 casos de casos/casos_directa_paso1.json --------------- */
-:- begin_tests(casos_persona1, [cleanup(limpiar_estado)]).
+/* ---- Los 20 casos de casos/casos.json ---------------------------- */
+:- begin_tests(casos_evaluacion, [cleanup(limpiar_estado)]).
 
-test(caso, [forall(caso_p1(Id, Estado, Esperada)), true(Accion == Esperada)]) :-
+test(caso, [forall(caso_eval(Id, Estado, Esperada)), true(Accion == Esperada)]) :-
     limpiar_estado,
     afirmar_estado(Estado, P),
     decidir(P, Accion, _),
     ( Accion == Esperada -> true ; format(user_error, "~w: ~w~n", [Id, Accion]) ).
 
-caso_p1(Id, Estado, Esperada) :-
+caso_eval(Id, Estado, Esperada) :-
     raiz_proyecto(R),
-    atom_concat(R, '/casos/casos_directa_paso1.json', Archivo),
+    atom_concat(R, '/casos/casos.json', Archivo),
     leer_json(Archivo, Casos),
     member(Caso, Casos),
     Id = Caso.id, Estado = Caso.estado, Esperada = Caso.decision_esperada.
 
-:- end_tests(casos_persona1).
+:- end_tests(casos_evaluacion).

@@ -1,12 +1,12 @@
 :- encoding(utf8).
-/*  hechos.pl  ·  Datos concretos de pedidos de ejemplo (Persona 1)
+/*  hechos.pl  ·  Datos concretos de pedidos de ejemplo
     ------------------------------------------------------------------
     Escritos a mano para la demo de Prolog y para prolog/consultas.pl.
     Cada campo del estado canónico es un hecho campo(Entidad, Valor);
     un campo vacío sería desconocido(Entidad, campo).
 
     p01, p02 y p05 son la traducción exacta de los casos C01, C02 y C05
-    de casos/casos_directa_paso1.json. p90, p91 y p92 son ejemplos solo
+    de casos/casos.json. p90, p91 y p92 son ejemplos solo
     para la demo: inferencia encadenada con retroceso, pedido sin
     solución y contradicción con varias acciones demostrables.
 

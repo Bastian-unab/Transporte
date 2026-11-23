@@ -1,88 +1,109 @@
 # Despacho de carga con Prolog y Laya
 
-Proyecto 2 de Fundamentos de Inteligencia Artificial. Compara dos agentes que
-reciben el mismo pedido de transporte y eligen entre cinco acciones: despachar,
-reasignar, esperar, inspeccionar o alertar.
+Proyecto 2 de Fundamentos de Inteligencia Artificial, Universidad Andrés Bello.
+
+Comparamos dos agentes que reciben el mismo estado de un pedido de transporte.
+Ambos eligen entre cinco acciones: `despachar`, `reasignar`, `esperar`,
+`inspeccionar` y `alertar`. Prolog aplica reglas y muestra la derivación de
+su respuesta. Laya usa una pregunta de decisión y devuelve las probabilidades
+de las acciones.
 
 ## Requisitos
 
-- Git.
-- Python 3.10 o superior. El entorno usado tiene Python 3.13.14.
-- SWI-Prolog en el `PATH`. Se verificó con SWI-Prolog 10.0.2.
-- Conexión a internet para instalar las dependencias y descargar el modelo de
-  Laya en su primera ejecución.
+- Git para clonar el repositorio.
+- Python 3.10 o superior.
+- SWI-Prolog disponible en el `PATH`.
+- Conexión a internet para instalar las dependencias y descargar el modelo
+  multilingüe en la primera ejecución.
+- Laya 0.5.0, fijado en `requirements.txt`.
 
 ## Instalación en Windows
 
-Abre PowerShell en la carpeta donde quieras clonar el proyecto.
+Si todavía no tienes el repositorio, clona la rama de prueba desde PowerShell.
 
 ```powershell
-git clone https://github.com/Bastian-unab/Transporte.git
+git clone --branch Prueba_laya https://github.com/Bastian-unab/Transporte.git
 cd Transporte
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+```
+
+Si ya lo tienes, abre PowerShell en la carpeta `Transporte` y asegúrate de
+estar en `Prueba_laya`. Crea un entorno para esta versión e instala las
+dependencias.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 swipl --version
 ```
 
-Si ya tienes el repositorio clonado, entra a su carpeta y continúa desde la
-creación o activación del entorno virtual.
+Los comandos usan directamente el Python de `.venv`, por lo que puedes
+ejecutarlos sin activar el entorno.
 
-## Ejecutar el proyecto
+## Abrir la interfaz
 
-Ejecuta estos comandos desde la raíz del repositorio, con el entorno activado.
+```powershell
+.\.venv\Scripts\python.exe app\servidor.py --puerto 8080
+```
 
-| Para | Comando |
-|---|---|
-| Abrir la interfaz | `python app/servidor.py` |
-| Comparar ambos agentes en el caso C17 | `python -m laya_agent.ejecutar_caso C17` |
-| Ejecutar C17 solo con Prolog | `python -m laya_agent.ejecutar_caso C17 --solo-prolog` |
-| Comparar ambos agentes con un estado nuevo | `python -m laya_agent.ejecutar_caso --estado mi_estado.json` |
-| Verificar los 20 casos con Prolog | `swipl prolog/verificar_casos.pl` |
-| Ejecutar las pruebas de Prolog | `swipl -g run_tests -t halt tests/test_reglas.pl` |
-| Ejecutar las pruebas de Python | `python -m unittest tests.test_laya -v` |
+Abre [http://127.0.0.1:8080](http://127.0.0.1:8080). Puedes seleccionar un caso
+guardado, como C17, o ingresar un estado nuevo. La interfaz muestra por separado
+la decisión y derivación de Prolog, la distribución de probabilidades de Laya
+y la comparación entre ambos.
 
-La interfaz abre en `http://localhost:8000`. Para los estados nuevos, usa el
-formato descrito en [Estado canónico](docs/estado_canonico.md).
+El formato de entrada está descrito en [Estado canónico](docs/estado_canonico.md).
+
+## Verificar los casos y ejecutar las pruebas
+
+```powershell
+swipl prolog/verificar_casos.pl
+swipl -g run_tests -t halt tests/test_reglas.pl
+.\.venv\Scripts\python.exe -m unittest tests.test_agentes -v
+```
+
+El primer comando verifica las decisiones esperadas de los 20 casos de
+`casos/casos.json`. Hay cuatro casos por categoría: información directa,
+inferencia de un paso, inferencia encadenada, información incompleta y
+contradicción o ambigüedad. Las pruebas unitarias de Laya usan un simulador.
+El experimento siguiente ejecuta el modelo real.
 
 ## Reproducir el experimento
 
 ```powershell
-python experimento/runner.py
-python experimento/metricas.py
+.\.venv\Scripts\python.exe -m experimento.ejecutar
 ```
 
-El primer comando ejecuta los dos agentes y guarda sus salidas en
-`experimento/resultados/resultados.json`. El segundo lee ese archivo y muestra
-los aciertos totales y por categoría, los desacuerdos y las decisiones de Laya
-con confianza inferior a 0,60.
+El comando ejecuta ambos agentes sobre `casos/casos.json` y calcula las
+métricas. Genera tres archivos:
 
-En la corrida del informe se usó Laya 0.4.12, modelo `multilingual` y criterios
-`v1`. Prolog acertó 20 de 20 casos y Laya acertó 4 de 20. El análisis está en
-[Informe](docs/Informe.md).
+| Archivo | Contenido |
+|---|---|
+| `experimento/resultados.json` | Estado, decisiones, derivaciones, probabilidades y métricas |
+| `experimento/resultados.csv` | Resumen tabular de los casos |
+| `experimento/resultados.md` | Resultados y métricas en Markdown |
+
+La verificación de Prolog dio **20 de 20** en esta rama. El resultado de Laya
+0.5.0 se registra a partir de una corrida nueva del experimento.
 
 ## Estructura
 
-| Carpeta | Contenido |
+| Ruta | Contenido |
 |---|---|
-| `docs/` | Modelo del dominio, formato del estado e informe |
-| `prolog/` | Hechos, reglas, consultas y carga del estado JSON |
-| `laya_agent/` | Agente Laya, pregunta tipada y puente a Prolog |
-| `app/` | Interfaz web local |
-| `casos/` | Los 20 casos con sus decisiones esperadas |
-| `experimento/` | Ejecución de ambos agentes, resultados y métricas |
+| `app/` | Servidor local y archivos de la interfaz en `app/static/` |
+| `prolog/` | Reglas, consultas y ejecución del agente lógico |
+| `laya_agent/` | Agente Laya, preguntas y puente entre Python y Prolog |
+| `casos/casos.json` | Los 20 casos que usa esta versión |
+| `experimento/` | Ejecución, métricas y archivos de salida |
 | `tests/` | Pruebas de Prolog y Python |
+| `docs/` | Modelo del dominio y documentación del proyecto |
 
-## Limitaciones
+## Alcance
 
-La evaluación usa 20 casos diseñados según la política de despacho del grupo.
-Las reglas de Prolog codifican esa política y los criterios `v1` de Laya
-resumen las acciones. Una confianza alta de Laya puede acompañar una respuesta
-incorrecta. Los casos representan escenarios simulados y la aplicación opera
-con los vehículos incluidos en el estado de entrada.
+Los escenarios son simulados. La aplicación evalúa los vehículos que vienen
+en el estado de entrada. La confianza de Laya describe la certeza de su
+elección y puede ser alta incluso cuando la respuesta es incorrecta.
 
 ## Fuentes técnicas
 
-- [Descarga oficial de SWI-Prolog](https://www.swi-prolog.org/download/stable)
-- [Laya 0.4.12 y documentación de uso](https://pypi.org/project/laya/0.4.12/)
-- [Ficha del modelo Laya](https://huggingface.co/convaiinnovations/laya)
+- [SWI-Prolog](https://www.swi-prolog.org/download/stable)
+- [Laya 0.5.0](https://pypi.org/project/laya/0.5.0/)
+- [Modelo multilingüe de Laya](https://huggingface.co/convaiinnovations/laya)

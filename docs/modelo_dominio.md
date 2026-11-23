@@ -304,7 +304,7 @@ El árbol muestra solo la rama que tuvo éxito. El intento fallido con v901 se p
 
 ## 13. Casos de prueba de Persona 1
 
-Archivo `casos/casos_directa_paso1.json`. Las decisiones esperadas se escribieron con el
+Archivo `casos/casos.json`. Las decisiones esperadas se escribieron con el
 criterio del dominio antes de ejecutar los agentes.
 
 | Id | Categoría | Situación | Esperada |

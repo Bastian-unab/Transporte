@@ -1,5 +1,5 @@
 :- encoding(utf8).
-/*  reglas.pl  ·  Base de conocimiento del agente lógico (Persona 1)
+/*  reglas.pl  ·  Base de conocimiento del agente lógico
     ------------------------------------------------------------------
     Dominio : central de despacho de carga local.
     Decisión: ¿qué acción de despacho debe ejecutarse primero para un pedido?
@@ -10,7 +10,7 @@
       - prolog/hechos.pl          ejemplos escritos a mano, o
       - prolog/estado_json.pl     que lee el estado canónico en JSON.
 
-    Predicado de entrada para el resto del grupo:
+    Predicado de entrada:
         decidir(+Pedido, -Accion, -Justificacion)
 
     Uso interactivo, desde la carpeta raíz del repositorio:
@@ -404,3 +404,52 @@ por_que_no(Meta, Nivel) :-
         forall(( member(F, Fallas), F \== Meta ), por_que_no(F, N1))
     ;   true
     ).
+
+
+/* ==================================================================
+   9. RESULTADO PARA PYTHON (lo usan ejecutar.pl y servidor.pl)
+   ------------------------------------------------------------------
+   resultado(+P, -Dict): la decisión y todo lo necesario para
+   mostrarla en el front, como un dict de SWI-Prolog que se escribe
+   como JSON. No agrega razonamiento nuevo: solo junta lo que ya
+   calculan decidir/3, acciones_candidatas/2, contradiccion/2 y
+   falta_dato_critico/2.
+   ================================================================== */
+
+resultado(P, _{pedido: P, accion: Accion, candidatas: Candidatas,
+               contradicciones: Contradicciones, faltantes: Faltantes,
+               asignado_apto: Apto,
+               justificacion: Lineas, pasos: Pasos}) :-
+    decidir(P, Accion, Pasos0),
+    acciones_candidatas(P, Candidatas),
+    findall(T, (contradiccion(P, C), term_string(C, T)), C0),
+    sort(C0, Contradicciones),
+    findall(T, (falta_dato_critico(P, F), term_string(F, T)), F0),
+    sort(F0, Faltantes),
+    asignado_apto(P, Apto),
+    maplist(texto_paso, Pasos0, Lineas),
+    maplist(paso_dict, Pasos0, Pasos).
+
+% asignado_apto(+P, -Apto): true o false según vehiculo_apto/2 para el
+% vehículo asignado; null si no hay vehículo asignado registrado. Se
+% compara con la pregunta de diagnóstico "asignado_sirve" de Laya.
+asignado_apto(P, Apto) :-
+    (   asignado(P, V)
+    ->  ( vehiculo_apto(P, V) -> Apto = true ; Apto = false )
+    ;   Apto = null
+    ).
+
+% paso_dict(+Paso, -Dict): un paso de la derivación con campos separados,
+% para que el front pueda dibujar el árbol con sangría y colores.
+paso_dict(paso(N, Tipo, Meta), _{nivel: N, tipo: TipoTexto, meta: MetaTexto, falla: Falla}) :-
+    texto_termino(Meta, MetaTexto),
+    (   Tipo = no_demostrable(Fallas)
+    ->  TipoTexto = negacion,
+        maplist(texto_termino, Fallas, TextosFallas),
+        atomic_list_concat(TextosFallas, ' / ', Falla)
+    ;   TipoTexto = Tipo,
+        Falla = null
+    ).
+
+texto_termino(T, Texto) :-
+    with_output_to(string(Texto), escribir(T)).
