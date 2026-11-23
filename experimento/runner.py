@@ -1,57 +1,85 @@
+import json
 import sys
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(RAIZ))
+raiz = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(raiz))
 
 from laya_agent.casos import cargar_casos
 from laya_agent.ejecutar_caso import ejecutar_ambos
 from laya_agent.preguntas import VERSION_POR_DEFECTO
-import laya_agent.agente_laya as agente_laya
+
 
 def main():
-    print("Cargando modelo Laya en memoria...\n")
-    agente_laya.precargar_laya()
-    
     casos = cargar_casos()
     if not casos:
-        print("No se encontraron casos en la carpeta 'casos/'.")
-        return
-        
-    print(f"{'ID':<4} | {'Estado_Pedido':<14} | {'Esperada':<12} | {'Prolog (Decisión/Justificación)':<42} | {'Laya (Acción/Confianza)':<25} | {'¿Correctos? (P/L)':<17} | {'Observación (Faltante/Contradicción)'}")
-    print("-" * 165)
+        raise SystemExit("No se encontraron casos en la carpeta casos/.")
+
+    version = VERSION_POR_DEFECTO
+    resultados = []
+    fallos = 0
 
     for caso in casos:
-        id_caso = caso["id"]
-        estado = caso["estado"]
-        esperada = caso.get("decision_esperada", "N/A")
-        
-        resultado = ejecutar_ambos(estado, esperada, VERSION_POR_DEFECTO, con_prolog=True, con_laya=True)
-        
-        prolog_data = resultado["prolog"]
-        if prolog_data and not prolog_data["error"]:
-            accion_p = prolog_data["accion"]
-            justif_p = prolog_data["justificacion"][-1][:30] + "..." if prolog_data["justificacion"] else "sin regla"
-            obs_p = ", ".join(prolog_data["faltantes"] + prolog_data["contradicciones"]) or "Normal"
-        else:
-            accion_p = "ERROR"
-            justif_p = prolog_data["error"][:30] if prolog_data else "Fallo puente"
-            obs_p = "-"
+        salida = ejecutar_ambos(
+            caso["estado"],
+            caso["decision_esperada"],
+            version,
+            con_prolog=True,
+            con_laya=True,
+        )
 
-        laya_data = resultado["laya"]
-        if laya_data and not laya_data["error"]:
-            accion_l = laya_data["accion"]
-            confianza = f"{laya_data['confianza']:.2f}"
-        else:
-            accion_l = "ERROR"
-            confianza = "-"
+        prolog = salida["prolog"]
+        laya = salida["laya"]
+        observaciones = []
 
-        comp = resultado["comparacion"]
-        p_corr = "Sí" if comp["prolog_correcto"] else "No"
-        l_corr = "Sí" if comp["laya_correcto"] else "No"
+        for dato in prolog.get("faltantes", []):
+            observaciones.append(f"Dato faltante: {dato}")
+        for dato in prolog.get("contradicciones", []):
+            observaciones.append(f"Contradicción: {dato}")
 
-        fila = f"{id_caso:<4} | {estado.get('pedido', 'N/A'):<14} | {esperada:<12} | {accion_p:<12} (Justif: {justif_p:<17}) | {accion_l:<10} (Conf: {confianza:<4}) | {p_corr:<7} / {l_corr:<7} | {obs_p}"
-        print(fila)
+        for agente, respuesta in (("Prolog", prolog), ("Laya", laya)):
+            if respuesta.get("error"):
+                fallos += 1
+                observaciones.append(f"{agente}: {respuesta['error']}")
+
+        if salida["comparacion"]["coinciden"] is False:
+            observaciones.append("Los agentes eligieron acciones distintas.")
+
+        resultados.append({
+            "id": caso["id"],
+            "categoria": caso["categoria"],
+            "descripcion": caso["descripcion"],
+            "estado": caso["estado"],
+            "decision_esperada": caso["decision_esperada"],
+            "criterio_esperada": caso["criterio_esperada"],
+            **salida,
+            "observaciones": observaciones,
+        })
+
+        print(
+            f"{caso['id']} | Esperada: {caso['decision_esperada']} | "
+            f"Prolog: {prolog['accion'] or 'ERROR'} | "
+            f"Laya: {laya['accion'] or 'ERROR'}",
+            flush=True,
+        )
+
+    archivo = raiz / "experimento" / "resultados" / "resultados.json"
+    archivo.parent.mkdir(parents=True, exist_ok=True)
+    corrida = {
+        "version_criterios": version,
+        "total_casos": len(resultados),
+        "fallos_ejecucion": fallos,
+        "casos": resultados,
+    }
+    archivo.write_text(
+        json.dumps(corrida, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    print(f"\nCasos guardados: {len(resultados)}")
+    print(f"Fallos de ejecución: {fallos}")
+    print(f"Archivo: {archivo}")
+
 
 if __name__ == "__main__":
     main()
