@@ -2,7 +2,7 @@
   {
     "id": "C17",
     "categoria": "contradiccion",
-    "descripcion": "Vehiculo con conbustible insuficiente",
+    "descripcion": "El vehículo asignado tiene poco combustible. Un alternativo está disponible y en mantención a la vez, y el otro está listo para salir",
     "estado": {
       "pedido": "P17",
       "carga_kg": 500,
@@ -19,10 +19,29 @@
         "combustible": "bajo",
         "conductor_disponible": true
       },
-      "vehiculos_alternativos": []
+      "vehiculos_alternativos": [
+        {
+          "id": "V171",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 900,
+          "disponible": true,
+          "en_mantencion": true,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        },
+        {
+          "id": "V172",
+          "tipo_vehiculo": "furgon",
+          "capacidad_kg": 900,
+          "disponible": true,
+          "en_mantencion": false,
+          "combustible": "suficiente",
+          "conductor_disponible": true
+        }
+      ]
     },
-    "decision_esperada": "alertar",
-    "criterio_esperada": "contradiccion, no se puede salir sin combustible"
+    "decision_esperada": "inspeccionar",
+    "criterio_esperada": "V172 permite reasignar, pero V171 figura disponible y en mantención a la vez. La inspección tiene prioridad sobre la reasignación"
   },
   {
     "id": "C18",
@@ -51,14 +70,14 @@
   },
   {
     "id": "C19",
-    "categoria": "ambiguedad",
-    "descripcion": "falta la urgencia del pedido, dato critico",
+    "categoria": "contradiccion",
+    "descripcion": "Pedido urgente con un vehículo apto, pero con una carga declarada de 0 kg",
     "estado": {
       "pedido": "P19",
-      "carga_kg": 300,
+      "carga_kg": 0,
       "tipo_carga": "general",
       "destino": "centro",
-      "urgencia": null,
+      "urgencia": "alta",
       "ruta_despejada": true,
       "vehiculo_asignado": {
         "id": "V19",
@@ -72,7 +91,7 @@
       "vehiculos_alternativos": []
     },
     "decision_esperada": "inspeccionar",
-    "criterio_esperada": "falta la urgencia, por lo que prolog no puede decidir si despachar o esperar"
+    "criterio_esperada": "El dominio exige una carga mayor que cero. La regla carga_no_positiva activa la inspección y esta tiene prioridad sobre despachar"
   },
   {
     "id": "C20",
